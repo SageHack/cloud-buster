@@ -1,0 +1,23 @@
+# If computers were smart, this code would be understood
+
+check_options()
+validate_options()
+if_bad_options_show_help()
+
+if_use_tor()
+  proxy_trough_tor()
+
+wget_cloudflare_ips()
+load_cf_ips()
+
+fetch_basic_host_info()
+check_for_cloudflare_finger_print()
+
+if_use_tor() and $unsure_about_host_behind_cloudflare
+  access_website_main_page()
+  check_for_cloudflare_captcha()
+
+subdomains_check()
+  scan_cloudflare_subs()
+  scan_godaddy_subs()
+  scan_for_services() /* ftp, ssh, rdp */
