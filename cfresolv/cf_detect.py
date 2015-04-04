@@ -6,13 +6,13 @@ class CF_Detect:
     IPV4_NETWORKS = [
         IPv4Network(network)
         for network
-        in open('ips-v4').read().splitlines()
+        in open('ips/ips-v4').read().splitlines()
     ]
 
     IPV6_NETWORKS = [
         IPv6Network(network)
         for network
-        in open('ips-v6').read().splitlines()
+        in open('ips/ips-v6').read().splitlines()
     ]
 
     def in_range(self, ip):
@@ -42,12 +42,3 @@ class CF_Detect:
                 return IPv6Address(ip)
             except:
                 return None
-
-
-cf = CF_Detect()
-print(cf.in_range('adfasdf'))
-print(cf.in_range(''))
-print(cf.in_range('172.71.255.250'))
-print(cf.in_range('250.71.255.250'))
-print(cf.in_range('2400:cb00::5e:b4da'))
-print(cf.in_range('9400:cb00::5e:b4da'))
