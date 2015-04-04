@@ -31,6 +31,17 @@ def check_ip(ip):
 def target(domain):
     target = Target(domain)
     target.infos()
+    if target.cf_ray:
+        scan_subdomains(domain)
+
+
+def scan_subdomains(domain):
+    subs = [sub for sub in open('lists/subdomains').read().splitlines()]
+    for sub in subs:
+        subdomain = sub+'.'+domain
+        target = Target(subdomain)
+        target.infos()
+
 
 if args.check_ip:
     check_ip(args.check_ip)
