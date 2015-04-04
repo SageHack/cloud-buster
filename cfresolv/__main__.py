@@ -1,11 +1,26 @@
+import argparse
 from cf_detect import CF_Detect
 
+parser = argparse.ArgumentParser(
+    description='CloudFlare pentest tool'
+)
+parser.add_argument(
+    '-i',
+    '--check_ip',
+    metavar='IP',
+    type=str,
+    help='Check if an IPv4/6 is owned by CloudFlare'
+)
+args = parser.parse_args()
 
-if __name__ == "__main__":
-    cf = CF_Detect()
-    print(cf.in_range('adfasdf'))
-    print(cf.in_range(''))
-    print(cf.in_range('172.71.255.250'))
-    print(cf.in_range('250.71.255.250'))
-    print(cf.in_range('2400:cb00::5e:b4da'))
-    print(cf.in_range('9400:cb00::5e:b4da'))
+
+def check_ip(ip):
+    detector = CF_Detect()
+    cf_owned = detector.in_range(ip)
+    print(cf_owned)
+
+
+if args.check_ip:
+    check_ip(args.check_ip)
+else:
+    parser.print_help()
