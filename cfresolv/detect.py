@@ -1,18 +1,18 @@
 from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network
 
 
-class CF_Detect:
+class Detector:
 
     IPV4_NETWORKS = [
         IPv4Network(network)
         for network
-        in open('ips/ips-v4').read().splitlines()
+        in open('lists/ips-v4').read().splitlines()
     ]
 
     IPV6_NETWORKS = [
         IPv6Network(network)
         for network
-        in open('ips/ips-v6').read().splitlines()
+        in open('lists/ips-v6').read().splitlines()
     ]
 
     def in_range(self, ip):
