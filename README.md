@@ -8,13 +8,13 @@ A security tool that aim at doing the following
 * sudo apt-get install python3
 * git clone https://github.com/SageHack/cloudflare-resolver.git
 * cd cloudflare-resolver
-* python3 cfresolv -h
+* python3 bust -h
 
 # How to use (Windows)
 * install python3.4
 * git clone https://github.com/SageHack/cloudflare-resolver.git
 * cd cloudflare-resolver
-* python3 cfresolv -h
+* python3 bust -h
 
 # CloudFlare ips sources
 https://www.cloudflare.com/ips<br>
