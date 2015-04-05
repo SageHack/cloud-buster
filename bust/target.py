@@ -5,6 +5,10 @@ from detect import Detector
 
 class Target:
 
+    info = {
+        'name': None,
+    }
+
     host = {
         'domain': None,
         'ip': None,
@@ -18,7 +22,8 @@ class Target:
         'cf-ray': None,
     }
 
-    def __init__(self, domain):
+    def __init__(self, name, domain):
+        self.info['name'] = name
         self.host['domain'] = domain
         self.ip(domain)
         if not self.host['ip']:
@@ -29,7 +34,7 @@ class Target:
         return bool(self.http['cf-ray'])
 
     def infos(self):
-        print('Target: '+self.host['domain'])
+        print(self.info['name'] + ': ' + self.host['domain'])
         if not self.host['ip']:
             print('> not-found')
             return

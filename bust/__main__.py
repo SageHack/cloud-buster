@@ -29,7 +29,7 @@ def check_ip(ip):
 
 
 def target(domain):
-    target = Target(domain)
+    target = Target('Target', domain)
     target.infos()
     if target.on_cloudflare():
         scan_subdomains(domain)
@@ -39,7 +39,7 @@ def scan_subdomains(domain):
     subs = [sub for sub in open('lists/subdomains').read().splitlines()]
     for sub in subs:
         subdomain = sub+'.'+domain
-        target = Target(subdomain)
+        target = Target('Subdomain', subdomain)
         target.infos()
 
 
