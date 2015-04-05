@@ -22,19 +22,32 @@ class Target:
         'cf-ray': None,
     }
 
-    def __init__(self, name, domain):
-        self.info['name'] = name
+    options = {
+        'name': 'Host',
+        'timeout': 10,
+        'ssl': False
+    }
+
+    def __init__(self, domain):
         self.host['domain'] = domain
-        self.ip(domain)
+
+    def scan(self):
+        self.ip(self.host['domain'])
         if not self.host['ip']:
             return None
-        self.http_response(domain)
+        self.http_response(self.host['domain'])
+
+    def option(self, option, value=None):
+        if value:
+            self.options[option] = value
+        else:
+            return self.options[option]
 
     def on_cloudflare(self):
         return bool(self.http['cf-ray'])
 
     def infos(self):
-        print(self.info['name'] + ': ' + self.host['domain'])
+        print(self.options['name']+': '+self.host['domain'])
         if not self.host['ip']:
             print('> not-found')
             return
@@ -57,7 +70,14 @@ class Target:
 
     def http_response(self, domain):
         try:
-            connection = http.client.HTTPConnection(domain)
+            if self.options['ssl']:
+                connection = http.client.HTTPSConnection(
+                    domain, timeout=self.options['timeout']
+                )
+            else:
+                connection = http.client.HTTPConnection(
+                    domain, timeout=self.options['timeout']
+                )
             connection.request("HEAD", "/")
             response = connection.getresponse()
             connection.close()
@@ -69,11 +89,13 @@ class Target:
         if response:
             self.http['cf-ray'] = response.getheader('CF-RAY')
             self.http['enabled'] = \
-                response.getheader('Server') \
-                + ' ' \
-                + response.getheader('X-Powered-By')
+                response.getheader('Server')
+            if response.getheader('X-Powered-By'):
+                self.http['enabled'] = self.http['enabled'] \
+                    + ' ' \
+                    + response.getheader('X-Powered-By')
             self.http['status'] = \
-                str(response.status) + ' ' + response.reason
+                str(response.status)+' '+response.reason
         else:
             self.http['cf-ray'] = None
             self.http['enabled'] = False
