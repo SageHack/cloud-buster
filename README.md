@@ -7,13 +7,13 @@ A security tool that aim at doing the following
 # How to use (Linux)
 * sudo apt-get install python3
 * git clone https://github.com/SageHack/cloudflare-resolver.git
-* cd cloudflare-resolver
+* cd cloud-buster
 * python3 bust -h
 
 # How to use (Windows)
 * install python3.4
 * git clone https://github.com/SageHack/cloudflare-resolver.git
-* cd cloudflare-resolver
+* cd cloud-buster
 * python3 bust -h
 
 # CloudFlare ips sources
