@@ -1,4 +1,4 @@
-from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network
+from ipaddress import ip_address, IPv4Network, IPv6Network
 
 
 class Detector:
@@ -16,16 +16,14 @@ class Detector:
     ]
 
     def in_range(self, ip):
-        address = self.instantiate_address(ip)
+        address = ip_address(ip)
         if not address:
             return False
 
         if address.version == 4:
-            networks = self.IPV4_NETWORKS
+            return self.in_network(address, self.IPV4_NETWORKS)
         else:
-            networks = self.IPV6_NETWORKS
-
-        return self.in_network(address, networks)
+            return self.in_network(address, self.IPV6_NETWORKS)
 
     def in_network(self, host, networks):
         for network in networks:
@@ -33,12 +31,3 @@ class Detector:
                 return True
 
         return False
-
-    def instantiate_address(self, ip):
-        try:
-            return IPv4Address(ip)
-        except:
-            try:
-                return IPv6Address(ip)
-            except:
-                return None
