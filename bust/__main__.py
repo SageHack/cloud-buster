@@ -17,7 +17,20 @@ parser.add_argument(
     '--target',
     metavar='DOMAIN',
     type=str,
-    help='Scan website for information'
+    help='Main target'
+)
+parser.add_argument(
+    '--panels',
+    nargs='*',
+    help='Scan popular panel services',
+    choices=(
+        'cpanel',
+        'cpanel-ssl',
+        'whm',
+        'whm-ssl',
+        'plesk',
+        'plesk-ssl'
+    )
 )
 args = parser.parse_args()
 
@@ -28,14 +41,15 @@ def check_ip(ip):
     print(cf_owned)
 
 
-def target(domain):
+def target(domain, args):
     target = Target(domain)
     target.option('name', 'Target')
     target.scan()
     target.infos()
     if target.on_cloudflare():
         scan_subdomains(domain)
-        scan_panels(domain)
+        if args.panels or args.panels == []:
+            scan_panels(domain, args)
 
 
 def scan_subdomains(domain):
@@ -48,33 +62,32 @@ def scan_subdomains(domain):
         target.infos()
 
 
-def scan_panels(domain):
+def scan_panels(domain, args):
     # http://www.mysql-apache-php.com/ports.htm
     panels = [
         {'name': 'cpanel', 'port': 2082, 'ssl': False},
         {'name': 'cpanel-ssl', 'port': 2083, 'ssl': True},
         {'name': 'whm', 'port': 2086, 'ssl': False},
         {'name': 'whm-ssl', 'port': 2087, 'ssl': True},
-        {'name': 'cpmail', 'port': 2095, 'ssl': False},
-        {'name': 'cpmail-ssl', 'port': 2096, 'ssl': True},
         {'name': 'plesk', 'port': 8087, 'ssl': False},
         {'name': 'plesk-ssl', 'port': 8443, 'ssl': True},
     ]
 
     for panel in panels:
-        target = Target(
-            domain+':'+str(panel['port'])
-        )
-        target.option('name', 'Admin ('+panel['name']+')')
-        target.option('timeout', 1)
-        target.option('ssl', panel['ssl'])
-        target.scan()
-        target.infos()
+        if args.panels == [] or panel['name'] in args.panels:
+            target = Target(
+                domain+':'+str(panel['port'])
+            )
+            target.option('name', 'Pannel ('+panel['name']+')')
+            target.option('timeout', 1)
+            target.option('ssl', panel['ssl'])
+            target.scan()
+            target.infos()
 
 
 if args.check_ip:
     check_ip(args.check_ip)
 elif args.target:
-    target(args.target)
+    target(args.target, args)
 else:
     parser.print_help()
