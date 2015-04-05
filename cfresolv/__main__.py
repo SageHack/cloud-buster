@@ -31,7 +31,7 @@ def check_ip(ip):
 def target(domain):
     target = Target(domain)
     target.infos()
-    if target.cf_ray:
+    if target.on_cloudflare():
         scan_subdomains(domain)
 
 
