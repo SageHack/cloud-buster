@@ -28,6 +28,7 @@ elif args.target:
     if buster.protected():
         buster.scan_subdomains()
         buster.scan_panels()
+        buster.search_crimeflare()
     buster.print_infos()
 else:
     parser.print_help()

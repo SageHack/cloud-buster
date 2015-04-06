@@ -53,16 +53,28 @@ class CloudBuster:
             target.print_infos()
             self.targets['panels'].append(target)
 
+    def search_crimeflare(self):
+        for line in open('lists/ipout'):
+            if self.domain in line:
+                self.crimeflare_ip = line.partition(' ')[2].rstrip()
+                return
+
     def print_infos(self):
         print('== SCAN SUMARY ==')
-        print('Target: '+self.targets['main'].host['domain'])
-        print('> ip: '+self.targets['main'].host['ip'])
-        print('> Protected: '+str(self.targets['main'].protected()))
+
+        if self.targets['main']:
+            print('Target: '+self.targets['main'].host['domain'])
+            print('> ip: '+self.targets['main'].host['ip'])
+            print('> Protected: '+str(self.targets['main'].protected()))
+
+        print('== Found ips ==')
 
         if self.protected():
-            print('== Found ips ==')
             for host in self.list_interesting_hosts():
                 print(host['ip']+' ('+host['domain']+')')
+
+        if self.crimeflare_ip:
+            print(self.crimeflare_ip+' (from crimeflare.com db)')
 
     def list_interesting_hosts(self):
         hosts = []
