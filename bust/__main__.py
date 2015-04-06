@@ -1,34 +1,24 @@
-import argparse
 from buster import CloudBuster
+from cli import args, parser
 
-parser = argparse.ArgumentParser(
-    description='CloudFlare pentest tool'
-)
-parser.add_argument(
-    '-i',
-    '--check_ip',
-    metavar='IP',
-    type=str,
-    help='Check if an IPv4/6 is owned by CloudFlare'
-)
-parser.add_argument(
-    '-t',
-    '--target',
-    metavar='DOMAIN',
-    type=str
-)
-
-args = parser.parse_args()
 buster = CloudBuster(args.target)
 
-if args.check_ip:
-    buster.check_ip(args.check_ip)
-elif args.target:
+if args.target:
     buster.scan_main()
     if buster.protected():
-        buster.scan_subdomains()
-        buster.scan_panels()
-        buster.search_crimeflare()
-    buster.print_infos()
+        if 'subdomains' in args.scan:
+            if args.sub:
+                buster.scan_subdomains(args.sub)
+            else:
+                buster.scan_subdomains()
+        if 'panels' in args.scan:
+            if args.pan:
+                buster.scan_panels(args.pan)
+            else:
+                buster.scan_panels()
+        if 'crimeflare' in args.scan:
+            buster.search_crimeflare()
+
+        buster.print_infos()
 else:
     parser.print_help()

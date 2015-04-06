@@ -12,6 +12,7 @@ class CloudBuster:
             'subdomains': [],
             'panels': []
         }
+        self.crimeflare_ip = None
 
     def check_ip(self, ip):
         detector = Detector()
@@ -31,27 +32,36 @@ class CloudBuster:
 
         return self.targets['main'].protected()
 
-    def scan_subdomains(self):
+    def scan_subdomains(self, subdomains=None):
         subs = [sub for sub in open('lists/subdomains').read().splitlines()]
-        for sub in subs:
-            subdomain = sub+'.'+self.domain
-            target = Target(subdomain)
-            target.option('name', 'Subdomain')
-            target.scan()
-            target.print_infos()
-            self.targets['subdomains'].append(target)
 
-    def scan_panels(self):
+        if subdomains:
+            for sub2scan in subdomains:
+                if sub2scan not in subs:
+                    subs.append(sub2scan)
+
+        for sub in subs:
+            if not subdomains or sub in subdomains:
+                subdomain = sub+'.'+self.domain
+                target = Target(subdomain)
+                target.option('name', 'Subdomain')
+                target.scan()
+                target.print_infos()
+                self.targets['subdomains'].append(target)
+
+    def scan_panels(self, panels=None):
+
         for panel in PANELS:
-            target = Target(
-                self.domain+':'+str(panel['port'])
-            )
-            target.option('name', 'Pannel ('+panel['name']+')')
-            target.option('timeout', 1)
-            target.option('ssl', panel['ssl'])
-            target.scan()
-            target.print_infos()
-            self.targets['panels'].append(target)
+            if not panels or panel['name'] in panels:
+                target = Target(
+                    self.domain+':'+str(panel['port'])
+                )
+                target.option('name', 'Pannel ('+panel['name']+')')
+                target.option('timeout', 1)
+                target.option('ssl', panel['ssl'])
+                target.scan()
+                target.print_infos()
+                self.targets['panels'].append(target)
 
     def search_crimeflare(self):
         for line in open('lists/ipout'):
