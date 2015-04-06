@@ -25,7 +25,7 @@ if args.check_ip:
     buster.check_ip(args.check_ip)
 elif args.target:
     buster.scan_main()
-    if buster.on_cloudflare():
+    if buster.protected():
         buster.scan_subdomains()
         buster.scan_panels()
     buster.print_infos()

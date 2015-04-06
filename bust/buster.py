@@ -25,11 +25,11 @@ class CloudBuster:
         target.print_infos()
         self.targets['main'] = target
 
-    def on_cloudflare(self):
+    def protected(self):
         if not self.targets['main'] or type(self.targets['main']) != Target:
             return False
 
-        return self.targets['main'].on_cloudflare()
+        return self.targets['main'].protected()
 
     def scan_subdomains(self):
         subs = [sub for sub in open('lists/subdomains').read().splitlines()]
@@ -57,17 +57,19 @@ class CloudBuster:
         print('== SCAN SUMARY ==')
         print('Target: '+self.targets['main'].host['domain'])
         print('> ip: '+self.targets['main'].host['ip'])
-        print('> on CloudFlare: '+str(self.targets['main'].on_cloudflare()))
-        print('== Found ips ==')
-        for host in self.list_interesting_hosts():
-            print(host['ip']+' ('+host['domain']+')')
+        print('> Protected: '+str(self.targets['main'].protected()))
+
+        if self.protected():
+            print('== Found ips ==')
+            for host in self.list_interesting_hosts():
+                print(host['ip']+' ('+host['domain']+')')
 
     def list_interesting_hosts(self):
         hosts = []
         targets = self.targets['subdomains'] + self.targets['panels']
 
         for target in targets:
-            if target.host['ip'] and not target.on_cloudflare():
+            if target.host['ip'] and not target.protected():
                 hosts.append({
                     'ip': target.host['ip'],
                     'domain': target.host['domain']

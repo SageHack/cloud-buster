@@ -41,7 +41,7 @@ class Target:
         else:
             return self.options[option]
 
-    def on_cloudflare(self):
+    def protected(self):
         return bool(self.http['cf-ray'])
 
     def print_infos(self):
