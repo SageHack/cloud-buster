@@ -24,9 +24,10 @@ buster = CloudBuster(args.target)
 if args.check_ip:
     buster.check_ip(args.check_ip)
 elif args.target:
-    buster.target()
-    if buster.target_on_cloudflare():
+    buster.scan_main()
+    if buster.on_cloudflare():
         buster.scan_subdomains()
         buster.scan_panels()
+    buster.print_infos()
 else:
     parser.print_help()

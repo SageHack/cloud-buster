@@ -5,31 +5,29 @@ from detect import Detector
 
 class Target:
 
-    info = {
-        'name': None,
-    }
-
-    host = {
-        'domain': None,
-        'ip': None,
-        'cf-ip': None,
-    }
-
-    http = {
-        'response': None,
-        'status': None,
-        'enabled': None,
-        'cf-ray': None,
-    }
-
-    options = {
-        'name': 'Host',
-        'timeout': 10,
-        'ssl': False
-    }
-
     def __init__(self, domain):
-        self.host['domain'] = domain
+        self.info = {
+            'name': None,
+        }
+
+        self.host = {
+            'domain': domain,
+            'ip': None,
+            'cf-ip': None,
+        }
+
+        self.http = {
+            'response': None,
+            'status': None,
+            'enabled': None,
+            'cf-ray': None,
+        }
+
+        self.options = {
+            'name': 'Host',
+            'timeout': 10,
+            'ssl': False
+        }
 
     def scan(self):
         self.ip(self.host['domain'])
@@ -46,7 +44,7 @@ class Target:
     def on_cloudflare(self):
         return bool(self.http['cf-ray'])
 
-    def infos(self):
+    def print_infos(self):
         print(self.options['name']+': '+self.host['domain'])
         if not self.host['ip']:
             print('> not-found')
