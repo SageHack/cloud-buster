@@ -65,7 +65,7 @@ class CloudBuster:
         if self.targets['main']:
             print('Target: '+self.targets['main'].host['domain'])
             print('> ip: '+self.targets['main'].host['ip'])
-            print('> Protected: '+str(self.targets['main'].protected()))
+            print('> protected: '+str(self.targets['main'].protected()))
 
         print('== Found ips ==')
 
