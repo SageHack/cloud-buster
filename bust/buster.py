@@ -73,9 +73,6 @@ class CloudBuster:
             for host in self.list_interesting_hosts():
                 print(host['ip']+' ('+host['domain']+')')
 
-        if self.crimeflare_ip:
-            print(self.crimeflare_ip+' (from crimeflare.com db)')
-
     def list_interesting_hosts(self):
         hosts = []
         targets = self.targets['subdomains'] + self.targets['panels']
@@ -86,5 +83,11 @@ class CloudBuster:
                     'ip': target.host['ip'],
                     'domain': target.host['domain']
                 })
+
+        if self.crimeflare_ip:
+            hosts.append({
+                'ip': self.crimeflare_ip,
+                'domain': 'from crimeflare.com db'
+            })
 
         return hosts
