@@ -15,24 +15,10 @@ parser.add_argument(
     '-t',
     '--target',
     metavar='DOMAIN',
-    type=str,
-    help='Main target'
+    type=str
 )
-parser.add_argument(
-    '--panels',
-    nargs='*',
-    help='Scan popular panel services',
-    choices=(
-        'cpanel',
-        'cpanel-ssl',
-        'whm',
-        'whm-ssl',
-        'plesk',
-        'plesk-ssl'
-    )
-)
-args = parser.parse_args()
 
+args = parser.parse_args()
 buster = CloudBuster(args.target)
 
 if args.check_ip:
@@ -41,7 +27,6 @@ elif args.target:
     buster.target()
     if buster.target_on_cloudflare():
         buster.scan_subdomains()
-        if args.panels or args.panels == []:
-            buster.scan_panels(args.panels)
+        buster.scan_panels()
 else:
     parser.print_help()
