@@ -76,7 +76,7 @@ class Target:
                 connection = http.client.HTTPConnection(
                     domain, timeout=self.options['timeout']
                 )
-            connection.request("HEAD", "/")
+            connection.request('HEAD', '/')
             response = connection.getresponse()
             connection.close()
         except:
