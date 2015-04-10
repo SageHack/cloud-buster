@@ -6,10 +6,6 @@ from detect import Detector
 class Target:
 
     def __init__(self, domain):
-        self.info = {
-            'name': None,
-        }
-
         self.host = {
             'domain': domain,
             'ip': None,
@@ -19,7 +15,7 @@ class Target:
         self.http = {
             'response': None,
             'status': None,
-            'enabled': None,
+            'enabled': False,
             'cf-ray': None,
         }
 
@@ -67,33 +63,29 @@ class Target:
         self.host['cf-ip'] = d.in_range(host_ip)
 
     def http_response(self, domain):
+        if self.options['ssl']:
+            connection = http.client.HTTPSConnection(
+                domain, timeout=self.options['timeout']
+            )
+        else:
+            connection = http.client.HTTPConnection(
+                domain, timeout=self.options['timeout']
+            )
         try:
-            if self.options['ssl']:
-                connection = http.client.HTTPSConnection(
-                    domain, timeout=self.options['timeout']
-                )
-            else:
-                connection = http.client.HTTPConnection(
-                    domain, timeout=self.options['timeout']
-                )
             connection.request('HEAD', '/')
-            response = connection.getresponse()
-            connection.close()
         except:
             return
+
+        response = connection.getresponse()
+        connection.close()
 
         self.http['response'] = response
 
         if response:
             self.http['cf-ray'] = response.getheader('CF-RAY')
-            self.http['enabled'] = \
-                response.getheader('Server')
+            self.http['enabled'] = response.getheader('Server')
+            self.http['status'] = str(response.status)+' '+response.reason
             if response.getheader('X-Powered-By'):
                 self.http['enabled'] = self.http['enabled'] \
                     + ' ' \
                     + response.getheader('X-Powered-By')
-            self.http['status'] = \
-                str(response.status)+' '+response.reason
-        else:
-            self.http['cf-ray'] = None
-            self.http['enabled'] = False
