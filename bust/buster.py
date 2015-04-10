@@ -75,17 +75,11 @@ class CloudBuster:
         try:
             import dns.resolver
         except:
-            print("== MX ==")
-            print(": Cannot scan MX records")
-            print(": dnspython not installed")
-            print(": check README.md to install")
+            from errors import DNSPythonError
+            DNSPythonError.output()
             return
 
-        try:
-            mxs = dns.resolver.query(self.domain, 'MX')
-        except:
-            return
-
+        mxs = dns.resolver.query(self.domain, 'MX')
         mx_priority = re.compile('\d* ')
 
         for mx in mxs:
@@ -107,9 +101,8 @@ class CloudBuster:
 
         print('== Found ips ==')
 
-        if self.protected():
-            for host in self.list_interesting_hosts():
-                print(host['ip']+' ('+host['domain']+')')
+        for host in self.list_interesting_hosts():
+            print(host['ip']+' ('+host['domain']+')')
 
     def list_interesting_hosts(self):
         hosts = []
