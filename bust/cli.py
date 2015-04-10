@@ -12,7 +12,7 @@ parser.add_argument(
     type=str
 )
 
-scan_choices = 'subdomains, panels, crimeflare'
+scan_choices = 'subdomains, panels, crimeflare, mx'
 parser.add_argument(
     '--scan',
     metavar='OPTION',

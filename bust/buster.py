@@ -1,6 +1,7 @@
 from detect import Detector
 from target import Target
 from panels import PANELS
+import re
 
 
 class CloudBuster:
@@ -10,7 +11,8 @@ class CloudBuster:
         self.targets = {
             'main': None,
             'subdomains': [],
-            'panels': []
+            'panels': [],
+            'mxs': []
         }
         self.crimeflare_ip = None
 
@@ -57,7 +59,7 @@ class CloudBuster:
                     self.domain+':'+str(panel['port'])
                 )
                 target.option('name', 'Pannel ('+panel['name']+')')
-                target.option('timeout', 1)
+                target.option('timeout', 2)
                 target.option('ssl', panel['ssl'])
                 target.scan()
                 target.print_infos()
@@ -68,6 +70,32 @@ class CloudBuster:
             if self.domain in line:
                 self.crimeflare_ip = line.partition(' ')[2].rstrip()
                 return
+
+    def scan_mx_records(self):
+        try:
+            import dns.resolver
+        except:
+            print("== MX ==")
+            print(": Cannot scan MX records")
+            print(": dnspython not installed")
+            print(": check README.md to install")
+            return
+
+        try:
+            mxs = dns.resolver.query(self.domain, 'MX')
+        except:
+            return
+
+        mx_priority = re.compile('\d* ')
+
+        for mx in mxs:
+            hostname = mx_priority.sub('', mx.to_text()[:-1])
+            target = Target(hostname)
+            target.option('name', 'MX')
+            target.option('timeout', 1)
+            target.scan()
+            target.print_infos()
+            self.targets['mxs'].append(target)
 
     def print_infos(self):
         print('== SCAN SUMARY ==')
@@ -85,7 +113,9 @@ class CloudBuster:
 
     def list_interesting_hosts(self):
         hosts = []
-        targets = self.targets['subdomains'] + self.targets['panels']
+        targets = self.targets['subdomains'] \
+            + self.targets['panels'] \
+            + self.targets['mxs']
 
         for target in targets:
             if target.host['ip'] and not target.protected():

@@ -16,7 +16,11 @@ A security tool that aim at doing the following
 * cd cloud-buster
 * python3 bust -h
 
-# CloudFlare ips sources
-https://www.cloudflare.com/ips<br>
-https://www.cloudflare.com/ips-v4<br>
-https://www.cloudflare.com/ips-v6
+# Installing DNS Python
+* Visit http://www.dnspython.org
+* Click Python 3.x Stable
+* Download dnspython3-x.xx.x.zip
+* Unzip
+* In terminal, browse to the unziped directory
+* Windows: python3 setup.py install (as admin)
+* Unix : sudo python3 setup.py install

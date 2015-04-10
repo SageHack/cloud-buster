@@ -18,6 +18,8 @@ if args.target:
                 buster.scan_panels()
         if 'crimeflare' in args.scan:
             buster.search_crimeflare()
+        if 'mx' in args.scan:
+            buster.scan_mx_records()
 
         buster.print_infos()
 else:
