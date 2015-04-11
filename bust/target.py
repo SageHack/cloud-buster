@@ -20,11 +20,9 @@ class Target:
             'cf-ray': None,
         }
 
-        self.options = {
-            'name': name,
-            'timeout': timeout,
-            'ssl': ssl
-        }
+        self.name = name
+        self.timeout = timeout
+        self.ssl = ssl
 
     def scan(self):
         self.ip(self.host['domain'])
@@ -32,17 +30,11 @@ class Target:
             return None
         self.http_response(self.host['domain'])
 
-    def option(self, option, value=None):
-        if value:
-            self.options[option] = value
-        else:
-            return self.options[option]
-
     def protected(self):
         return bool(self.http['cf-ray'])
 
     def print_infos(self):
-        print(self.options['name']+': '+self.host['domain'])
+        print(self.name+': '+self.host['domain'])
         if not self.host['ip']:
             print('> not-found')
             return
@@ -64,13 +56,13 @@ class Target:
         self.host['cf_ip'] = d.in_range(host_ip)
 
     def http_response(self, domain):
-        if self.options['ssl']:
+        if self.ssl:
             connection = http.client.HTTPSConnection(
-                domain, timeout=self.options['timeout']
+                domain, timeout=self.timeout
             )
         else:
             connection = http.client.HTTPConnection(
-                domain, timeout=self.options['timeout']
+                domain, timeout=self.timeout
             )
         try:
             connection.request('HEAD', '/')
