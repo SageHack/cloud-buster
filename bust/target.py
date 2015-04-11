@@ -5,11 +5,12 @@ from detect import Detector
 
 class Target:
 
-    def __init__(self, domain):
+    def __init__(self, domain, name='Host', timeout=10, ssl=False):
+
         self.host = {
             'domain': domain,
             'ip': None,
-            'cf-ip': None,
+            'cf_ip': None,
         }
 
         self.http = {
@@ -20,9 +21,9 @@ class Target:
         }
 
         self.options = {
-            'name': 'Host',
-            'timeout': 10,
-            'ssl': False
+            'name': name,
+            'timeout': timeout,
+            'ssl': ssl
         }
 
     def scan(self):
@@ -47,7 +48,7 @@ class Target:
             return
 
         print('> ip: '+self.host['ip'])
-        print('> cf-ip: '+str(self.host['cf-ip']))
+        print('> cf_ip: '+str(self.host['cf_ip']))
         print('> cf-ray: '+str(self.http['cf-ray']))
         print('> http: '+str(self.http['enabled']))
         print('> status: '+str(self.http['status']))
@@ -60,7 +61,7 @@ class Target:
 
         d = Detector()
         self.host['ip'] = host_ip
-        self.host['cf-ip'] = d.in_range(host_ip)
+        self.host['cf_ip'] = d.in_range(host_ip)
 
     def http_response(self, domain):
         if self.options['ssl']:

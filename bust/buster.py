@@ -22,8 +22,10 @@ class CloudBuster:
         print(cf_owned)
 
     def scan_main(self):
-        target = Target(self.domain)
-        target.option('name', 'Target')
+        target = Target(
+            domain=self.domain,
+            name='Target'
+        )
         target.scan()
         target.print_infos()
         self.targets['main'] = target
@@ -45,8 +47,10 @@ class CloudBuster:
         for sub in subs:
             if not subdomains or sub in subdomains:
                 subdomain = sub+'.'+self.domain
-                target = Target(subdomain)
-                target.option('name', 'Subdomain')
+                target = Target(
+                    domain=subdomain,
+                    name='Subdomain'
+                )
                 target.scan()
                 target.print_infos()
                 self.targets['subdomains'].append(target)
@@ -56,11 +60,12 @@ class CloudBuster:
         for panel in PANELS:
             if not panels or panel['name'] in panels:
                 target = Target(
-                    self.domain+':'+str(panel['port'])
+                    domain=self.domain+':'+str(panel['port']),
+                    name='Pannel ('+panel['name']+')',
+                    timeout=2,
+                    ssl=panel['ssl']
+
                 )
-                target.option('name', 'Pannel ('+panel['name']+')')
-                target.option('timeout', 2)
-                target.option('ssl', panel['ssl'])
                 target.scan()
                 target.print_infos()
                 self.targets['panels'].append(target)
@@ -84,9 +89,11 @@ class CloudBuster:
 
         for mx in mxs:
             hostname = mx_priority.sub('', mx.to_text()[:-1])
-            target = Target(hostname)
-            target.option('name', 'MX')
-            target.option('timeout', 1)
+            target = Target(
+                domain=hostname,
+                name='MX',
+                timeout=1
+            )
             target.scan()
             target.print_infos()
             self.targets['mxs'].append(target)
