@@ -81,7 +81,11 @@ class CloudBuster:
             DNSPythonError.output()
             return
 
-        mxs = dns.resolver.query(self.domain, 'MX')
+        try:
+            mxs = dns.resolver.query(self.domain, 'MX')
+        except:
+            return
+
         mx_priority = re.compile('\d* ')
 
         for mx in mxs:
