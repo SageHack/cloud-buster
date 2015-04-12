@@ -19,20 +19,29 @@ class Target:
 
     @property
     def cloudflare_ray(self):
-        return self.response.getheader('CF-RAY')
+        try:
+            return self.response.getheader('CF-RAY')
+        except:
+            return None
 
     @property
     def enabled(self):
-        if self.response.getheader('X-Powered-By'):
-            return self.response.getheader('Server') \
-                + ' ' \
-                + self.response.getheader('X-Powered-By')
-        else:
-            return self.response.getheader('Server')
+        try:
+            if self.response.getheader('X-Powered-By'):
+                return self.response.getheader('Server') \
+                    + ' ' \
+                    + self.response.getheader('X-Powered-By')
+            else:
+                return self.response.getheader('Server')
+        except:
+            return None
 
     @property
     def status(self):
-        return str(self.response.status)+' '+self.response.reason
+        try:
+            return str(self.response.status)+' '+self.response.reason
+        except:
+            return None
 
     @property
     def protected(self):
