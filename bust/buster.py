@@ -26,7 +26,6 @@ class CloudBuster:
             domain=self.domain,
             name='Target'
         )
-        target.scan()
         target.print_infos()
         self.targets['main'] = target
 
@@ -34,7 +33,7 @@ class CloudBuster:
         if not self.targets['main'] or type(self.targets['main']) != Target:
             return False
 
-        return self.targets['main'].protected()
+        return self.targets['main'].protected
 
     def scan_subdomains(self, subdomains=None):
         subs = [sub for sub in open('lists/subdomains').read().splitlines()]
@@ -51,7 +50,6 @@ class CloudBuster:
                     domain=subdomain,
                     name='Subdomain'
                 )
-                target.scan()
                 target.print_infos()
                 self.targets['subdomains'].append(target)
 
@@ -66,7 +64,6 @@ class CloudBuster:
                     ssl=panel['ssl']
 
                 )
-                target.scan()
                 target.print_infos()
                 self.targets['panels'].append(target)
 
@@ -94,7 +91,6 @@ class CloudBuster:
                 name='MX',
                 timeout=1
             )
-            target.scan()
             target.print_infos()
             self.targets['mxs'].append(target)
 
@@ -104,7 +100,7 @@ class CloudBuster:
         if self.targets['main']:
             print('Target: '+self.targets['main'].domain)
             print('> ip: '+self.targets['main'].ip)
-            print('> protected: '+str(self.targets['main'].protected()))
+            print('> protected: '+str(self.targets['main'].protected))
 
         print('== Found ips ==')
 
@@ -118,7 +114,7 @@ class CloudBuster:
             + self.targets['mxs']
 
         for target in targets:
-            if target.ip and not target.protected():
+            if target.ip and not target.protected:
                 hosts.append({
                     'ip': target.ip,
                     'domain': target.domain

@@ -8,26 +8,72 @@ class Target:
     def __init__(self, domain, name='Host', timeout=10, ssl=False):
 
         self.domain = domain
-        self.ip = None
-        self.cloudflare_ip = None
-
-        self.response = None
-        self.status = None
-        self.enabled = False
-        self.cloudflare_ray = None
-
         self.name = name
         self.timeout = timeout
         self.ssl = ssl
 
-    def scan(self):
-        self.resolve_ip(self.domain)
-        if not self.ip:
-            return None
-        self.http_response(self.domain)
+    @property
+    def cloudflare_ip(self):
+        d = Detector()
+        return d.in_range(self.ip)
 
+    @property
+    def cloudflare_ray(self):
+        return self.response.getheader('CF-RAY')
+
+    @property
+    def enabled(self):
+        if self.response.getheader('X-Powered-By'):
+            return self.response.getheader('Server') \
+                + ' ' \
+                + self.response.getheader('X-Powered-By')
+        else:
+            return self.response.getheader('Server')
+
+    @property
+    def status(self):
+        return str(self.response.status)+' '+self.response.reason
+
+    @property
     def protected(self):
         return bool(self.cloudflare_ray)
+
+    @property
+    def ip(self):
+        try:
+            return self._ip
+        except:
+            try:
+                self._ip = socket.gethostbyname(self.domain)
+            except:
+                self._ip = None
+
+            return self._ip
+
+    @property
+    def response(self):
+        try:
+            return self._response
+        except:
+            if self.ssl:
+                connection = http.client.HTTPSConnection(
+                    self.domain, timeout=self.timeout
+                )
+            else:
+                connection = http.client.HTTPConnection(
+                    self.domain, timeout=self.timeout
+                )
+            try:
+                connection.request('HEAD', '/')
+            except:
+                self._response = None
+                return self._response
+
+            response = connection.getresponse()
+            connection.close()
+
+            self._response = response
+            return self._response
 
     def print_infos(self):
         print(self.name+': '+self.domain)
@@ -40,41 +86,3 @@ class Target:
         print('> CF-ray: '+str(self.cloudflare_ray))
         print('> http: '+str(self.enabled))
         print('> status: '+str(self.status))
-
-    def resolve_ip(self, domain):
-        try:
-            host_ip = socket.gethostbyname(domain)
-        except:
-            return
-
-        d = Detector()
-        self.ip = host_ip
-        self.cloudflare_ip = d.in_range(host_ip)
-
-    def http_response(self, domain):
-        if self.ssl:
-            connection = http.client.HTTPSConnection(
-                domain, timeout=self.timeout
-            )
-        else:
-            connection = http.client.HTTPConnection(
-                domain, timeout=self.timeout
-            )
-        try:
-            connection.request('HEAD', '/')
-        except:
-            return
-
-        response = connection.getresponse()
-        connection.close()
-
-        self.response = response
-
-        if response:
-            self.cloudflare_ray = response.getheader('CF-RAY')
-            self.enabled = response.getheader('Server')
-            self.status = str(response.status)+' '+response.reason
-            if response.getheader('X-Powered-By'):
-                self.enabled = self.enabled \
-                    + ' ' \
-                    + response.getheader('X-Powered-By')
