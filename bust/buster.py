@@ -102,8 +102,8 @@ class CloudBuster:
         print('== SCAN SUMARY ==')
 
         if self.targets['main']:
-            print('Target: '+self.targets['main'].host['domain'])
-            print('> ip: '+self.targets['main'].host['ip'])
+            print('Target: '+self.targets['main'].domain)
+            print('> ip: '+self.targets['main'].ip)
             print('> protected: '+str(self.targets['main'].protected()))
 
         print('== Found ips ==')
@@ -118,10 +118,10 @@ class CloudBuster:
             + self.targets['mxs']
 
         for target in targets:
-            if target.host['ip'] and not target.protected():
+            if target.ip and not target.protected():
                 hosts.append({
-                    'ip': target.host['ip'],
-                    'domain': target.host['domain']
+                    'ip': target.ip,
+                    'domain': target.domain
                 })
 
         if self.crimeflare_ip:

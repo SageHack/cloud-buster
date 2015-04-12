@@ -7,53 +7,49 @@ class Target:
 
     def __init__(self, domain, name='Host', timeout=10, ssl=False):
 
-        self.host = {
-            'domain': domain,
-            'ip': None,
-            'cf_ip': None,
-        }
+        self.domain = domain
+        self.ip = None
+        self.cloudflare_ip = None
 
-        self.http = {
-            'response': None,
-            'status': None,
-            'enabled': False,
-            'cf-ray': None,
-        }
+        self.response = None
+        self.status = None
+        self.enabled = False
+        self.cloudflare_ray = None
 
         self.name = name
         self.timeout = timeout
         self.ssl = ssl
 
     def scan(self):
-        self.ip(self.host['domain'])
-        if not self.host['ip']:
+        self.resolve_ip(self.domain)
+        if not self.ip:
             return None
-        self.http_response(self.host['domain'])
+        self.http_response(self.domain)
 
     def protected(self):
-        return bool(self.http['cf-ray'])
+        return bool(self.cloudflare_ray)
 
     def print_infos(self):
-        print(self.name+': '+self.host['domain'])
-        if not self.host['ip']:
+        print(self.name+': '+self.domain)
+        if not self.ip:
             print('> not-found')
             return
 
-        print('> ip: '+self.host['ip'])
-        print('> cf_ip: '+str(self.host['cf_ip']))
-        print('> cf-ray: '+str(self.http['cf-ray']))
-        print('> http: '+str(self.http['enabled']))
-        print('> status: '+str(self.http['status']))
+        print('> ip: '+self.ip)
+        print('> CF-ip: '+str(self.cloudflare_ip))
+        print('> CF-ray: '+str(self.cloudflare_ray))
+        print('> http: '+str(self.enabled))
+        print('> status: '+str(self.status))
 
-    def ip(self, domain):
+    def resolve_ip(self, domain):
         try:
             host_ip = socket.gethostbyname(domain)
         except:
             return
 
         d = Detector()
-        self.host['ip'] = host_ip
-        self.host['cf_ip'] = d.in_range(host_ip)
+        self.ip = host_ip
+        self.cloudflare_ip = d.in_range(host_ip)
 
     def http_response(self, domain):
         if self.ssl:
@@ -72,13 +68,13 @@ class Target:
         response = connection.getresponse()
         connection.close()
 
-        self.http['response'] = response
+        self.response = response
 
         if response:
-            self.http['cf-ray'] = response.getheader('CF-RAY')
-            self.http['enabled'] = response.getheader('Server')
-            self.http['status'] = str(response.status)+' '+response.reason
+            self.cloudflare_ray = response.getheader('CF-RAY')
+            self.enabled = response.getheader('Server')
+            self.status = str(response.status)+' '+response.reason
             if response.getheader('X-Powered-By'):
-                self.http['enabled'] = self.http['enabled'] \
+                self.enabled = self.enabled \
                     + ' ' \
                     + response.getheader('X-Powered-By')
