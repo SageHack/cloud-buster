@@ -48,7 +48,8 @@ class CloudBuster:
                 subdomain = sub+'.'+self.domain
                 target = Target(
                     domain=subdomain,
-                    name='Subdomain'
+                    name='Subdomain',
+                    timeout=5
                 )
                 target.print_infos()
                 self.targets['subdomains'].append(target)
@@ -103,7 +104,7 @@ class CloudBuster:
 
         if self.targets['main']:
             print('Target: '+self.targets['main'].domain)
-            print('> ip: '+self.targets['main'].ip)
+            print('> ip: '+str(self.targets['main'].ip))
             print('> protected: '+str(self.targets['main'].protected))
 
         print('== Found ips ==')
