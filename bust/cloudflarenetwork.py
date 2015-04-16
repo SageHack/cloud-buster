@@ -1,7 +1,7 @@
 from ipaddress import ip_address, IPv4Network, IPv6Network
 
 
-class Detector:
+class CloudFlareNetwork:
 
     IPV4_NETWORKS = [
         IPv4Network(network)

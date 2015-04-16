@@ -1,21 +1,21 @@
-import http.client
-import socket
-from detect import Detector
+from descriptor.httpresponse import HttpResponse
+from descriptor.hostbyname import HostByName
+from cloudflarenetwork import CloudFlareNetwork
 
 
 class Target:
 
     def __init__(self, domain, name='Host', timeout=10, ssl=False):
-
         self.domain = domain
         self.name = name
-        self.timeout = timeout
-        self.ssl = ssl
+        self.ip = HostByName(domain).__get__()
+        if self.ip:
+            self.response = HttpResponse(domain, timeout, ssl).__get__()
 
     @property
     def cloudflare_ip(self):
-        d = Detector()
-        return d.in_range(self.ip)
+        net = CloudFlareNetwork()
+        return net.in_range(self.ip)
 
     @property
     def cloudflare_ray(self):
@@ -47,50 +47,13 @@ class Target:
     def protected(self):
         return bool(self.cloudflare_ray)
 
-    @property
-    def ip(self):
-        try:
-            return self._ip
-        except:
-            try:
-                self._ip = socket.gethostbyname(self.domain)
-            except:
-                self._ip = None
-
-            return self._ip
-
-    @property
-    def response(self):
-        try:
-            return self._response
-        except:
-            if self.ssl:
-                connection = http.client.HTTPSConnection(
-                    self.domain, timeout=self.timeout
-                )
-            else:
-                connection = http.client.HTTPConnection(
-                    self.domain, timeout=self.timeout
-                )
-            try:
-                connection.request('HEAD', '/')
-            except:
-                self._response = None
-                return self._response
-
-            response = connection.getresponse()
-            connection.close()
-
-            self._response = response
-            return self._response
-
     def print_infos(self):
         print(self.name+': '+self.domain)
         if not self.ip:
             print('> not-found')
             return
 
-        print('> ip: '+self.ip)
+        print('> ip: '+str(self.ip))
         print('> CF-ip: '+str(self.cloudflare_ip))
         print('> CF-ray: '+str(self.cloudflare_ray))
         print('> http: '+str(self.enabled))

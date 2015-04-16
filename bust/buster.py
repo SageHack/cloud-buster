@@ -1,4 +1,4 @@
-from detect import Detector
+from cloudflarenetwork import CloudFlareNetwork
 from target import Target
 from panels import PANELS
 import re
@@ -17,9 +17,8 @@ class CloudBuster:
         self.crimeflare_ip = None
 
     def check_ip(self, ip):
-        detector = Detector()
-        cf_owned = detector.in_range(ip)
-        print(cf_owned)
+        net = CloudFlareNetwork()
+        print(net.in_range(ip))
 
     def scan_main(self):
         target = Target(
