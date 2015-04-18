@@ -3,15 +3,16 @@ import http.client
 
 class HttpResponse(object):
 
+    responses = {}
+
     def __init__(self, domain, timeout=10, ssl=False):
         self.domain = domain
         self.timeout = timeout
         self.ssl = ssl
-        self.response = None
 
-    def __get__(self):
-        if self.response:
-            return self.response
+    def __get__(self, obj=None, objtype=None):
+        if self.domain in self.responses:
+            return self.responses[self.domain]
 
         if self.ssl:
             connection = http.client.HTTPSConnection(
@@ -24,15 +25,14 @@ class HttpResponse(object):
 
         try:
             connection.request('HEAD', '/')
+            response = connection.getresponse()
         except:
-            self.response = None
-            return self.response
+            response = None
 
-        response = connection.getresponse()
         connection.close()
 
-        self.response = response
-        return self.response
+        self.responses[self.domain] = response
+        return response
 
-    def __set__(self):
+    def __set__(self, obj=None, val=None):
         raise AttributeError

@@ -3,20 +3,22 @@ import socket
 
 class HostByName(object):
 
+    ips = {}
+
     def __init__(self, domain):
         self.domain = domain
-        self.ip = None
 
-    def __get__(self):
-        if self.ip:
-            return self.ip
+    def __get__(self, obj=None, objtype=None):
+        if self.domain in self.ips:
+            return self.ips[self.domain]
 
         try:
-            self.ip = socket.gethostbyname(self.domain)
+            ip = socket.gethostbyname(self.domain)
         except:
-            pass
+            ip = None
 
-        return self.ip
+        self.ips[self.domain] = ip
+        return ip
 
-    def __set__(self):
+    def __set__(self, obj=None, val=None):
         raise AttributeError
