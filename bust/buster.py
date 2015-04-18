@@ -1,7 +1,7 @@
 from cloudflarenetwork import CloudFlareNetwork
+from descriptor.mxrecords import MxRecords
 from target import Target
 from panels import PANELS
-import re
 
 
 class CloudBuster:
@@ -74,24 +74,10 @@ class CloudBuster:
                 return
 
     def scan_mx_records(self):
-        try:
-            import dns.resolver
-        except:
-            from errors import DNSPythonError
-            DNSPythonError.output()
-            return
 
-        try:
-            mxs = dns.resolver.query(self.domain, 'MX')
-        except:
-            return
-
-        mx_priority = re.compile('\d* ')
-
-        for mx in mxs:
-            hostname = mx_priority.sub('', mx.to_text()[:-1])
+        for mx in MxRecords(self.domain).__get__():
             target = Target(
-                domain=hostname,
+                domain=mx,
                 name='MX',
                 timeout=1
             )
