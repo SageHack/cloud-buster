@@ -55,16 +55,23 @@ class Target:
         return bool(self.cloudflare_ray)
 
     def print_infos(self):
-        print(self.name+': '+self.domain)
+        print('['+self.name+'] '+self.domain)
         if not self.ip:
             print('> not-found')
             return
 
         print('> ip: '+str(self.ip))
-        print('> CF-ip: '+str(self.cloudflare_ip))
-        print('> CF-ray: '+str(self.cloudflare_ray))
-        print('> http: '+str(self.enabled))
+
+        if self.cloudflare_ip:
+            print('> CF-ip: '+str(self.cloudflare_ip))
+
+        if self.cloudflare_ray:
+            print('> CF-ray: '+str(self.cloudflare_ray))
+
+        if self.enabled:
+            print('> http: '+str(self.enabled))
+
         if self.status and self.reason:
             print('> status: '+str(self.status)+' '+str(self.reason))
-        else:
+        elif self.status:
             print('> status: '+str(self.status))

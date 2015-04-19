@@ -22,7 +22,7 @@ class CloudBuster:
 
     def scan_main(self):
         target = Target(
-            name='Target',
+            name='target',
             domain=self.domain
         )
         target.print_infos()
@@ -46,7 +46,7 @@ class CloudBuster:
             if not subdomains or sub in subdomains:
                 subdomain = sub+'.'+self.domain
                 target = Target(
-                    name='Subdomain',
+                    name='subdomain',
                     domain=subdomain,
                     timeout=5
                 )
@@ -58,7 +58,7 @@ class CloudBuster:
         for panel in PANELS:
             if not panels or panel['name'] in panels:
                 target = Target(
-                    name='Pannel ('+panel['name']+')',
+                    name=panel['name']+':'+str(panel['port']),
                     domain=self.domain,
                     port=panel['port'],
                     timeout=2,
@@ -78,7 +78,7 @@ class CloudBuster:
 
         for mx in MxRecords(self.domain).__get__():
             target = Target(
-                name='MX',
+                name='mx',
                 domain=mx,
                 timeout=1
             )
@@ -86,14 +86,14 @@ class CloudBuster:
             self.targets['mxs'].append(target)
 
     def print_infos(self):
-        print('== SCAN SUMARY ==')
+        print('[SCAN SUMARY]')
 
         if self.targets['main']:
             print('Target: '+self.targets['main'].domain)
             print('> ip: '+str(self.targets['main'].ip))
             print('> protected: '+str(self.targets['main'].protected))
 
-        print('== Found ips ==')
+        print('[found ips]')
 
         for host in self.list_interesting_hosts():
             print(host['ip']+' > '+host['description'])
@@ -115,7 +115,8 @@ class CloudBuster:
         if self.crimeflare_ip:
             hosts.append({
                 'ip': self.crimeflare_ip,
-                'description': 'from crimeflare.com db'
+                'description': self.targets['main'].domain
+                + ' / from crimeflare.com db'
             })
 
         return hosts
