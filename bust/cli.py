@@ -8,8 +8,9 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument(
     'target',
-    metavar='DOMAIN_NAME',
-    type=str
+    metavar='DOMAIN',
+    type=str,
+    help='Domain name or file with name list, one per line'
 )
 
 scan_choices = 'subdomains, panels, crimeflare, mx'

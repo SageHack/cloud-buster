@@ -1,11 +1,9 @@
 from buster import CloudBuster
 from cli import args, parser
+import os.path
 
 
-if not args.target:
-    parser.print_help()
-
-else:
+def scan(args):
     buster = CloudBuster(args.target)
     buster.scan_main()
 
@@ -28,3 +26,23 @@ else:
         buster.scan_mx_records()
 
     buster.print_infos()
+
+
+def scan_list(args):
+    file = args.target
+    for target in open(file).read().splitlines():
+        args.target = target
+        print('====================================')
+        scan(args)
+
+
+def main(args):
+    if not args.target:
+        parser.print_help()
+    if os.path.isfile(args.target):
+        scan_list(args)
+    else:
+        scan(args)
+
+
+main(args)
