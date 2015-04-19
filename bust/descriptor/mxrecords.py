@@ -18,12 +18,14 @@ class MxRecords(object):
         except:
             mxs = None
 
-        mx_priority = re.compile('\d* ')
-
-        recs = [
-            mx_priority.sub('', mx.to_text()[:-1])
-            for mx in mxs
-        ]
+        if mxs:
+            mx_priority = re.compile('\d* ')
+            recs = [
+                mx_priority.sub('', mx.to_text()[:-1])
+                for mx in mxs
+            ]
+        else:
+            recs = None
 
         self.records[self.domain] = recs
         return recs
