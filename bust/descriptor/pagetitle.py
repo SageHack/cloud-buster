@@ -6,21 +6,46 @@ class PageTitle(object):
 
     titles = {}
 
-    def __init__(self, address, host_header=None):
-        self.address = address
-        self.host_header = host_header
+    def __init__(self, url, host=None):
+        self.url = url
+        self.host = host
 
     def __get__(self, obj=None, objtype=None):
-        if self.address in self.titles:
-            print('title already in memory')
-            return self.titles[self.address]
+        if self.id in self.titles:
+            return self.titles[self.id]
 
-        print('fetching page title')
+        request = urllib.request.Request(url=self.url, headers=self.headers)
+
         try:
-            html = urllib.request.urlopen(self.address).read()
+            html = urllib.request.urlopen(request, timeout=5).read()
         except:
             html = None
 
+        title = self.parse_title(html)
+        self.titles[self.id] = title
+        return title
+
+    def __set__(self, obj=None, val=None):
+        raise AttributeError
+
+    @property
+    def id(self):
+        if self.host:
+            return self.url+':'+self.host
+        else:
+            return self.url
+
+    @property
+    def headers(self):
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; rv:36.0)' +
+            'Gecko/200101 Firefox/36.0'
+        }
+        if self.host:
+            headers['Host'] = self.host
+        return headers
+
+    def parse_title(self, html):
         html = str(html)
         get_title = re.compile(
             '<title>(.*?)</title>',
@@ -29,9 +54,6 @@ class PageTitle(object):
         search_result = get_title.search(html)
 
         if search_result:
-            title = search_result.group(1)
+            return search_result.group(1)
         else:
-            title = None
-
-        self.titles[self.address] = title
-        return title
+            return None
