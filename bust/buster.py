@@ -109,21 +109,22 @@ class CloudBuster:
         target_title = PageTitle(
             'http://'+self.targets['main'].domain
         ).__get__()
-        print('target title > '+target_title)
+        print('target title > '+str(target_title))
 
-        for host in self.list_interesting_hosts():
-            print('scanning > '+host['ip'])
-            title = PageTitle(
-                'http://'+host['ip'],
-                self.targets['main'].domain
-            ).__get__()
-            if title == target_title:
-                print('[CONFIRMED]')
-                print('> ip: '+host['ip'])
-                print('> title: '+title)
-                break
-        else:
-            print('unable to confirm success')
+        if target_title:
+            for host in self.list_interesting_hosts():
+                print('scanning > '+host['ip'])
+                title = PageTitle(
+                    'http://'+host['ip'],
+                    self.targets['main'].domain
+                ).__get__()
+                if title == target_title:
+                    print('>> CONFIRMED <<')
+                    print('> ip: '+host['ip'])
+                    print('> title: '+str(title))
+                    return
+
+        print('>> UNABLE TO CONFIRM <<')
 
     def list_interesting_hosts(self):
         hosts = []
