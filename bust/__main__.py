@@ -26,6 +26,7 @@ def scan(args):
         buster.scan_mx_records()
 
     buster.print_infos()
+    buster.match_results()
 
 
 def scan_list(args):

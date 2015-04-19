@@ -1,5 +1,6 @@
 from cloudflarenetwork import CloudFlareNetwork
 from descriptor.mxrecords import MxRecords
+from descriptor.pagetitle import PageTitle
 from target import Target
 from panels import PANELS
 
@@ -97,6 +98,27 @@ class CloudBuster:
 
         for host in self.list_interesting_hosts():
             print(host['ip']+' > '+host['description'])
+
+    def match_results(self):
+        print('[analysing results]')
+        target_title = PageTitle(
+            'http://'+self.targets['main'].domain
+        ).__get__()
+        print('target title > '+target_title)
+
+        for host in self.list_interesting_hosts():
+            print('scanning > '+host['ip'])
+            title = PageTitle(
+                'http://'+host['ip'],
+                self.targets['main'].domain
+            ).__get__()
+            if title == target_title:
+                print('[CONFIRMED]')
+                print('> ip: '+host['ip'])
+                print('> title :'+title)
+                break
+        else:
+            print('unable to confirm success')
 
     def list_interesting_hosts(self):
         hosts = []
