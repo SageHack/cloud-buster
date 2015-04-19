@@ -22,8 +22,8 @@ class CloudBuster:
 
     def scan_main(self):
         target = Target(
-            domain=self.domain,
-            name='Target'
+            name='Target',
+            domain=self.domain
         )
         target.print_infos()
         self.targets['main'] = target
@@ -46,8 +46,8 @@ class CloudBuster:
             if not subdomains or sub in subdomains:
                 subdomain = sub+'.'+self.domain
                 target = Target(
-                    domain=subdomain,
                     name='Subdomain',
+                    domain=subdomain,
                     timeout=5
                 )
                 target.print_infos()
@@ -58,8 +58,9 @@ class CloudBuster:
         for panel in PANELS:
             if not panels or panel['name'] in panels:
                 target = Target(
-                    domain=self.domain+':'+str(panel['port']),
                     name='Pannel ('+panel['name']+')',
+                    domain=self.domain,
+                    port=panel['port'],
                     timeout=2,
                     ssl=panel['ssl']
 
@@ -77,8 +78,8 @@ class CloudBuster:
 
         for mx in MxRecords(self.domain).__get__():
             target = Target(
-                domain=mx,
                 name='MX',
+                domain=mx,
                 timeout=1
             )
             target.print_infos()
@@ -95,7 +96,7 @@ class CloudBuster:
         print('== Found ips ==')
 
         for host in self.list_interesting_hosts():
-            print(host['ip']+' ('+host['domain']+')')
+            print(host['ip']+' > '+host['description'])
 
     def list_interesting_hosts(self):
         hosts = []
@@ -104,16 +105,17 @@ class CloudBuster:
             + self.targets['mxs']
 
         for target in targets:
-            if target.ip and not target.protected:
+            if target.ip and not target.protected \
+                    and target.status and target.status != 400:
                 hosts.append({
                     'ip': target.ip,
-                    'domain': target.domain
+                    'description': target.domain+' / '+target.name
                 })
 
         if self.crimeflare_ip:
             hosts.append({
                 'ip': self.crimeflare_ip,
-                'domain': 'from crimeflare.com db'
+                'description': 'from crimeflare.com db'
             })
 
         return hosts

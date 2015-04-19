@@ -5,12 +5,12 @@ from cloudflarenetwork import CloudFlareNetwork
 
 class Target:
 
-    def __init__(self, domain, name='Host', timeout=10, ssl=False):
+    def __init__(self, name, domain, port=None, timeout=10, ssl=False):
         self.domain = domain
         self.name = name
         self.ip = HostByName(domain).__get__()
         if self.ip:
-            self.response = HttpResponse(domain, timeout, ssl).__get__()
+            self.response = HttpResponse(domain, port, timeout, ssl).__get__()
 
     @property
     def cloudflare_ip(self):
@@ -39,7 +39,14 @@ class Target:
     @property
     def status(self):
         try:
-            return str(self.response.status)+' '+self.response.reason
+            return self.response.status
+        except:
+            return None
+
+    @property
+    def reason(self):
+        try:
+            return self.response.reason
         except:
             return None
 
@@ -57,4 +64,7 @@ class Target:
         print('> CF-ip: '+str(self.cloudflare_ip))
         print('> CF-ray: '+str(self.cloudflare_ray))
         print('> http: '+str(self.enabled))
-        print('> status: '+str(self.status))
+        if self.status and self.reason:
+            print('> status: '+str(self.status)+' '+str(self.reason))
+        else:
+            print('> status: '+str(self.status))
