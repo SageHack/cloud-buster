@@ -10,6 +10,11 @@ class PageTitle(object):
         self.url = url
         self.host = host
 
+        if host:
+            self.id = self.url+':'+self.host
+        else:
+            self.id = self.url
+
     def __get__(self, obj=None, objtype=None):
         if self.id in self.titles:
             return self.titles[self.id]
@@ -27,13 +32,6 @@ class PageTitle(object):
 
     def __set__(self, obj=None, val=None):
         raise AttributeError
-
-    @property
-    def id(self):
-        if self.host:
-            return self.url+':'+self.host
-        else:
-            return self.url
 
     @property
     def headers(self):
