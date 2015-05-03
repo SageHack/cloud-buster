@@ -39,7 +39,11 @@ class HttpResponse(object):
             )
 
         try:
-            connection.request('HEAD', '/')
+            connection.request('HEAD', '/', None, headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; rv:36.0)' +
+                'Gecko/200101 Firefox/36.0'
+                }
+            )
             response = connection.getresponse()
         except:
             response = None
