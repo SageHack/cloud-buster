@@ -60,18 +60,19 @@ class Target:
             print('> not-found')
             return
 
-        print('> ip: '+str(self.ip))
-
-        if self.cloudflare_ip:
-            print('> CF-ip: '+str(self.cloudflare_ip))
-
-        if self.cloudflare_ray:
-            print('> CF-ray: '+str(self.cloudflare_ray))
+        print(
+            '> ip: %s (CF %s%s)' % (
+                self.ip,
+                'yes' if self.cloudflare_ip else 'no',
+                ' RAY-'+self.cloudflare_ray if self.cloudflare_ray else ''
+            )
+        )
 
         if self.enabled:
-            print('> http: '+str(self.enabled))
-
-        if self.status and self.reason:
-            print('> status: '+str(self.status)+' '+str(self.reason))
-        elif self.status:
-            print('> status: '+str(self.status))
+            print(
+                '> http: %s %s %s' % (
+                    self.enabled+' -' if self.enabled else '',
+                    self.status,
+                    self.reason if self.reason else ''
+                )
+            )

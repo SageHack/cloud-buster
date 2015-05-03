@@ -116,17 +116,23 @@ class CloudBuster:
         print('target title > '+str(target_title))
 
         if target_title:
+            prev_ip = None
+
             for host in self.list_interesting_hosts():
-                print('scanning > '+host['ip'])
-                title = PageTitle(
-                    'http://'+host['ip'],
-                    self.targets['main'].domain
-                ).__get__()
-                if title == target_title:
-                    print('>> CONFIRMED <<')
-                    print('> ip: '+host['ip'])
-                    print('> title: '+str(title))
-                    return
+                if prev_ip != host['ip']:
+                    print('scanning > '+host['ip'])
+                    prev_ip = host['ip']
+
+                    title = PageTitle(
+                        'http://'+host['ip'],
+                        self.targets['main'].domain
+                    ).__get__()
+
+                    if title == target_title:
+                        print('>> CONFIRMED <<')
+                        print('> ip: '+host['ip'])
+                        print('> title: '+str(title))
+                        return
 
         print('>> UNABLE TO CONFIRM <<')
 
