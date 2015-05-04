@@ -38,6 +38,7 @@ A security tool that aim at doing the following
 * python3 bust -h
 
 # Exemples
+* python3 lists/update.py
 * python3 bust mydomain.com
 * python3 bust mydomain.com --scan crimeflare
 * python3 bust mydomain.com --scan subdomains mx
@@ -48,3 +49,6 @@ A security tool that aim at doing the following
 
 # Using domain lists
 Use a text file with one domain per line, nothing else
+
+# Updating lists
+CrimeFlare DB is updated every two weeks, the GitHub repo might not be up to date with the latest list. You should use the update tool to get the latests lists.
