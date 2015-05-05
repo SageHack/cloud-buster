@@ -3,7 +3,8 @@ import zipfile
 import os
 import sys
 
-def reporthook(blocknum, blocksize, totalsize):
+
+def progressbar(blocknum, blocksize, totalsize):
     readsofar = blocknum * blocksize
     if totalsize > 0:
         percent = readsofar * 1e2 / totalsize
@@ -13,26 +14,28 @@ def reporthook(blocknum, blocksize, totalsize):
     if readsofar >= totalsize:  # near the end
         sys.stderr.write("\n")
 
-print('Downloading Cloudflare IPV4 ip list')
-urllib.request.urlretrieve('https://www.cloudflare.com/ips-v4', 'ips-v4')
 
-print('Downloading Cloudflare IPV6 ip lists')
-urllib.request.urlretrieve('https://www.cloudflare.com/ips-v6', 'ips-v6')
+def download(url, file, progressbar=None):
+    print('Downloading %s' % url)
+    urllib.request.urlretrieve(url, file, progressbar)
 
-print('Downloading latest subdomain list from GitHub repo')
-urllib.request.urlretrieve(
-    'https://raw.githubusercontent.com/SageHack/cloud-buster/master/lists/subdomains',
-    'subdomains'
-)
 
-print('Downloading latest CrimeFlare DB, this might take one or two minutes')
-urllib.request.urlretrieve(
-    'http://www.crimeflare.com/domains/ipout.zip',
-    'ipout.zip',
-    reporthook
-)
-with zipfile.ZipFile('ipout.zip', 'w') as myzip:
-    myzip.write('ipout')
-os.remove('ipout.zip')
+def unzip(file):
+    with zipfile.ZipFile(file+'.zip', 'w') as myzip:
+        myzip.write(file)
+    os.remove(file+'.zip')
+
+downloads = [
+    ['https://www.cloudflare.com/ips-v4', 'lists/ips-v4', None],
+    ['https://www.cloudflare.com/ips-v6', 'lists/ips-v6', None],
+    ['http://www.crimeflare.com/domains/ipout.zip',
+        'lists/ipout.zip',
+        progressbar]
+]
+
+for d in downloads:
+    download(d[0], d[1], d[2])
+
+unzip('lists/ipout')
 
 print('Everything up to date!')
