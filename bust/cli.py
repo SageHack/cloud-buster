@@ -19,7 +19,7 @@ parser.add_argument(
     metavar='OPTION',
     nargs='*',
     choices=scan_choices.split(', '),
-    default=scan_choices.split(', '),
+    default='subdomains crimeflare mx',
     help=scan_choices
 )
 

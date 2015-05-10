@@ -19,11 +19,11 @@ def scan(args):
                 buster.scan_subdomains()
 
         # TODO : Make this useful, cause it's not solving anything
-        # if 'panels' in args.scan:
-        #    if args.pan:
-        #        buster.scan_panels(args.pan)
-        #    else:
-        #        buster.scan_panels()
+        if 'panels' in args.scan:
+            if args.pan:
+                buster.scan_panels(args.pan)
+            else:
+                buster.scan_panels()
 
         if 'crimeflare' in args.scan:
             buster.search_crimeflare()
