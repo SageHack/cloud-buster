@@ -17,6 +17,13 @@ class CloudBuster:
         }
         self.crimeflare_ip = None
 
+    def resolving(self):
+        if self.targets['main']:
+            if self.targets['main'].ip:
+                return True
+
+        return False
+
     def check_ip(self, ip):
         net = CloudFlareNetwork()
         print(net.in_range(ip))

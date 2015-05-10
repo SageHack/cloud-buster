@@ -7,25 +7,33 @@ def scan(args):
     buster = CloudBuster(args.target)
     buster.scan_main()
 
-    if 'subdomains' in args.scan:
-        if args.sub:
-            buster.scan_subdomains(args.sub)
-        else:
-            buster.scan_subdomains()
+    if not buster.resolving():
+        print('>> NOT FOUND <<')
+        return
 
-    if 'panels' in args.scan:
-        if args.pan:
-            buster.scan_panels(args.pan)
-        else:
-            buster.scan_panels()
+    if buster.protected():
+        if 'subdomains' in args.scan:
+            if args.sub:
+                buster.scan_subdomains(args.sub)
+            else:
+                buster.scan_subdomains()
 
-    if 'crimeflare' in args.scan:
-        buster.search_crimeflare()
+        # TODO : Make this useful, cause it's not solving anything
+        # if 'panels' in args.scan:
+        #    if args.pan:
+        #        buster.scan_panels(args.pan)
+        #    else:
+        #        buster.scan_panels()
 
-    if 'mx' in args.scan:
-        buster.scan_mx_records()
+        if 'crimeflare' in args.scan:
+            buster.search_crimeflare()
 
-    buster.print_infos()
+        if 'mx' in args.scan:
+            buster.scan_mx_records()
+
+    if buster.protected():
+        buster.print_infos()
+
     buster.match_results()
 
 

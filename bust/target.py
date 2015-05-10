@@ -57,7 +57,6 @@ class Target:
     def print_infos(self):
         print('['+self.name+'] '+self.domain)
         if not self.ip:
-            print('> not-found')
             return
 
         print(
