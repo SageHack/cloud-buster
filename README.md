@@ -7,6 +7,9 @@ A security tool that aim at doing the following
 # Tested OSes
 * Debian
 * Ubuntu
+* Arch
+* Void
+* Parabola
 
 # How to use (ubuntu)
 * sudo apt-get install python3 python3-pip
