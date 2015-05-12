@@ -40,7 +40,18 @@ A security tool that aim at doing the following
 * cd cloud-buster
 * python3 bust -h
 
-# Exemples
+# How to use (Arch and Parabola)
+* pacman -Sy python python-pip
+
+
+# How to use (Void)
+* xbps-install python3 python-pip
+* pip install dnspython3
+* git clone https://github.com/SageHack/cloudflare-resolver.git
+* cd cloud-buster
+* python3 bust -h
+
+# Examples
 * python3 lists/update.py
 * python3 bust mydomain.com
 * python3 bust mydomain.com --scan crimeflare
