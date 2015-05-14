@@ -102,10 +102,6 @@ class CloudBuster:
     def match_results(self):
         print('[analysing results]')
 
-        if not self.targets['main'].protected:
-            print('>> NOT BEHIND CLOUDFLARE <<')
-            return
-
         target_title = PageTitle(
             'http://'+self.targets['main'].domain
         ).__get__()
