@@ -29,10 +29,7 @@ class CloudBuster:
         print(net.in_range(ip))
 
     def scan_main(self):
-        target = Target(
-            name='target',
-            domain=self.domain
-        )
+        target = Target(self.domain, 'target')
         target.print_infos()
         self.targets['main'] = target
 
@@ -53,11 +50,7 @@ class CloudBuster:
         for sub in subs:
             if not subdomains or sub in subdomains:
                 subdomain = sub+'.'+self.domain
-                target = Target(
-                    name='subdomain',
-                    domain=subdomain,
-                    timeout=5
-                )
+                target = Target(subdomain, 'subdomain', timeout=5)
                 target.print_infos()
                 self.targets['subdomains'].append(target)
 
@@ -66,8 +59,8 @@ class CloudBuster:
         for panel in PANELS:
             if not panels or panel['name'] in panels:
                 target = Target(
-                    name=panel['name']+':'+str(panel['port']),
                     domain=self.domain,
+                    name=panel['name']+':'+str(panel['port']),
                     port=panel['port'],
                     timeout=2,
                     ssl=panel['ssl']
@@ -89,11 +82,7 @@ class CloudBuster:
             return
 
         for mx in mxs:
-            target = Target(
-                name='mx',
-                domain=mx,
-                timeout=1
-            )
+            target = Target(mx, 'mx', timeout=1)
             target.print_infos()
             self.targets['mxs'].append(target)
 

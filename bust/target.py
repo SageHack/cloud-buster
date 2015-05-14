@@ -5,12 +5,25 @@ from cloudflarenetwork import CloudFlareNetwork
 
 class Target:
 
-    def __init__(self, name, domain, port=None, timeout=10, ssl=False):
+    def __init__(self, domain, name=None, port=None, timeout=10, ssl=False):
         self.domain = domain
-        self.name = name
-        self.ip = HostByName(domain).__get__()
-        if self.ip:
-            self.response = HttpResponse(domain, port, timeout, ssl).__get__()
+        if name:
+            self.name = name
+        else:
+            self.name = domain
+        self.port = port
+        self.timeout = timeout
+        self.ssl = ssl
+
+    @property
+    def ip(self):
+        return HostByName(self.domain).__get__()
+
+    @property
+    def response(self):
+        return HttpResponse(
+            self.domain, self.port, self.timeout, self.ssl
+        ).__get__()
 
     @property
     def cloudflare_ip(self):
