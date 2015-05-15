@@ -22,7 +22,7 @@ def scan(args):
             target_found = buster.scan_subdomains()
 
         if target_found:
-            buster.scan_summary()
+            print('>> MATCH <<')
             return
 
     # TODO : Make this useful, cause it's not solving anything
@@ -33,25 +33,25 @@ def scan(args):
             target_found = buster.scan_panels()
 
         if target_found:
-            buster.scan_summary()
+            print('>> MATCH <<')
             return
 
     if 'crimeflare' in args.scan:
         target_found = buster.search_crimeflare()
 
         if target_found:
-            buster.scan_summary()
+            print('>> MATCH <<')
             return
 
     if 'mx' in args.scan:
         target_found = buster.scan_mx_records()
 
         if target_found:
-            buster.scan_summary()
+            print('>> MATCH <<')
             return
 
     buster.scan_summary()
-
+    print('>> UNABLE TO CONFIRM <<')
 
 def scan_list(args):
     file = args.target

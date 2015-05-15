@@ -45,25 +45,14 @@ class CloudBuster:
             toscan = subdomains
         else:
             toscan = open('lists/subdomains').read().splitlines()
-
-        subTargets = [
+        targets = [
             Target(sub+'.'+self.domain, 'subdomain', timeout=5)
             for sub in toscan
         ]
-
-        for target in subTargets:
-            target.print_infos()
-            if self.is_interesting(target):
-                self.targets['subdomains'].append(target)
-                if self.match(target):
-                    print('>> MATCH <<')
-                    return target
-
-        return None
+        return self.scan(targets, 'subdomains')
 
     def scan_panels(self, panels=None):
-        panTargets = []
-
+        targets = []
         for panel in PANELS:
             if not panels or panel['name'] in panels:
                 target = Target(
@@ -73,60 +62,39 @@ class CloudBuster:
                     timeout=2,
                     ssl=panel['ssl']
                 )
-                panTargets.append(target)
-
-        for target in panTargets:
-            target.print_infos()
-            if self.is_interesting(target):
-                self.targets['panels'].append(target)
-                if self.match(target):
-                    print('>> MATCH <<')
-                    return target
-
-        return None
+                targets.append(target)
+        return self.scan(targets, 'panels')
 
     def search_crimeflare(self):
-        cfTargets = []
-
+        targets = []
         for line in open('lists/ipout'):
             if self.domain in line:
                 crimeflare_ip = line.partition(' ')[2].rstrip()
                 target = Target(crimeflare_ip, 'crimeflare')
-                cfTargets.append(target)
-
-        for target in cfTargets:
-            target.print_infos()
-            if self.is_interesting(target):
-                self.targets['crimeflare'].append(target)
-                if self.match(target):
-                    print('>> MATCH <<')
-                    return target
-
-        return None
+                targets.append(target)
+        return self.scan(targets, 'crimeflare')
 
     def scan_mx_records(self):
-
         mxs = MxRecords(self.domain).__get__()
         if not mxs:
             return
-
-        mxTargets = [
+        targets = [
             Target(mx, 'mx', timeout=1)
             for mx in mxs
         ]
+        return self.scan(targets, 'mxs')
 
-        for target in mxTargets:
+    def scan(self, target_list, target_type):
+        for target in target_list:
             target.print_infos()
             if self.is_interesting(target):
-                self.targets['mxs'].append(target)
+                self.targets[target_type].append(target)
                 if self.match(target):
-                    print('>> MATCH <<')
                     return target
         return None
 
-
     def is_interesting(self, target):
-        return target.ip and target.protected is False
+        return target.ip and not target.protected
 
     def match(self, possible_target):
         main_target = self.targets['main']
@@ -147,34 +115,10 @@ class CloudBuster:
             print('> ip: '+str(self.targets['main'].ip))
             print('> protected: '+str(self.targets['main'].protected))
 
-        print('[found ips]')
+        print('[interesting ips]')
 
         for host in self.list_interesting_hosts():
             print(host['ip']+' > '+host['description'])
-
-        target_title = PageTitle(
-            'http://'+self.targets['main'].domain
-        ).__get__()
-
-        if target_title:
-            prev_ip = None
-
-            for host in self.list_interesting_hosts():
-                if prev_ip != host['ip']:
-                    prev_ip = host['ip']
-
-                    title = PageTitle(
-                        'http://'+host['ip'],
-                        self.targets['main'].domain
-                    ).__get__()
-
-                    if title == target_title:
-                        print('>> CONFIRMED <<')
-                        print('> ip: '+host['ip'])
-                        print('> title: '+str(title))
-                        return
-
-        print('>> UNABLE TO CONFIRM <<')
 
     def list_interesting_hosts(self):
         hosts = []
@@ -184,7 +128,7 @@ class CloudBuster:
             + self.targets['crimeflare']
 
         for target in targets:
-            if target.ip and not target.protected \
+            if self.is_interesting(target) \
                     and target.status and target.status != 400:
                 hosts.append({
                     'ip': target.ip,
