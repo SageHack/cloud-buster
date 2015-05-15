@@ -17,26 +17,40 @@ def scan(args):
 
     if 'subdomains' in args.scan:
         if args.sub:
-            buster.scan_subdomains(args.sub)
+            target_found = buster.scan_subdomains(args.sub)
         else:
-            buster.scan_subdomains()
+            target_found = buster.scan_subdomains()
+
+        if target_found:
+            buster.scan_summary()
+            return
 
     # TODO : Make this useful, cause it's not solving anything
     if 'panels' in args.scan:
         if args.pan:
-            buster.scan_panels(args.pan)
+            target_found = buster.scan_panels(args.pan)
         else:
-            buster.scan_panels()
+            target_found = buster.scan_panels()
+
+        if target_found:
+            buster.scan_summary()
+            return
 
     if 'crimeflare' in args.scan:
-        buster.search_crimeflare()
+        target_found = buster.search_crimeflare()
+
+        if target_found:
+            buster.scan_summary()
+            return
 
     if 'mx' in args.scan:
-        buster.scan_mx_records()
+        target_found = buster.scan_mx_records()
 
-    buster.print_infos()
+        if target_found:
+            buster.scan_summary()
+            return
 
-    buster.match_results()
+    buster.scan_summary()
 
 
 def scan_list(args):

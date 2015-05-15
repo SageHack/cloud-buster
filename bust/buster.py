@@ -13,7 +13,8 @@ class CloudBuster:
             'main': None,
             'subdomains': [],
             'panels': [],
-            'mxs': []
+            'mxs': [],
+            'crimeflare': []
         }
         self.crimeflare_ip = None
 
@@ -52,9 +53,16 @@ class CloudBuster:
 
         for target in subTargets:
             target.print_infos()
-            self.targets['subdomains'].append(target)
+            if self.is_interesting(target):
+                self.targets['subdomains'].append(target)
+                if self.match(target):
+                    print('>> MATCH <<')
+                    return target
+
+        return None
 
     def scan_panels(self, panels=None):
+        panTargets = []
 
         for panel in PANELS:
             if not panels or panel['name'] in panels:
@@ -64,16 +72,37 @@ class CloudBuster:
                     port=panel['port'],
                     timeout=2,
                     ssl=panel['ssl']
-
                 )
-                target.print_infos()
+                panTargets.append(target)
+
+        for target in panTargets:
+            target.print_infos()
+            if self.is_interesting(target):
                 self.targets['panels'].append(target)
+                if self.match(target):
+                    print('>> MATCH <<')
+                    return target
+
+        return None
 
     def search_crimeflare(self):
+        cfTargets = []
+
         for line in open('lists/ipout'):
             if self.domain in line:
-                self.crimeflare_ip = line.partition(' ')[2].rstrip()
-                return
+                crimeflare_ip = line.partition(' ')[2].rstrip()
+                target = Target(crimeflare_ip, 'crimeflare')
+                cfTargets.append(target)
+
+        for target in cfTargets:
+            target.print_infos()
+            if self.is_interesting(target):
+                self.targets['crimeflare'].append(target)
+                if self.match(target):
+                    print('>> MATCH <<')
+                    return target
+
+        return None
 
     def scan_mx_records(self):
 
@@ -81,13 +110,37 @@ class CloudBuster:
         if not mxs:
             return
 
-        for mx in mxs:
-            target = Target(mx, 'mx', timeout=1)
-            target.print_infos()
-            self.targets['mxs'].append(target)
+        mxTargets = [
+            Target(mx, 'mx', timeout=1)
+            for mx in mxs
+        ]
 
-    def print_infos(self):
-        print('[SCAN SUMARY]')
+        for target in mxTargets:
+            target.print_infos()
+            if self.is_interesting(target):
+                self.targets['mxs'].append(target)
+                if self.match(target):
+                    print('>> MATCH <<')
+                    return target
+        return None
+
+
+    def is_interesting(self, target):
+        return target.ip and target.protected is False
+
+    def match(self, possible_target):
+        main_target = self.targets['main']
+        main_target.title = PageTitle(
+            'http://'+main_target.domain
+        ).__get__()
+        possible_target.title = PageTitle(
+            'http://'+possible_target.ip,
+            main_target.domain
+        ).__get__()
+        return main_target.title == possible_target.title
+
+    def scan_summary(self):
+        print('[SCAN SUMMARY]')
 
         if self.targets['main']:
             print('Target: '+self.targets['main'].domain)
@@ -99,20 +152,15 @@ class CloudBuster:
         for host in self.list_interesting_hosts():
             print(host['ip']+' > '+host['description'])
 
-    def match_results(self):
-        print('[analysing results]')
-
         target_title = PageTitle(
             'http://'+self.targets['main'].domain
         ).__get__()
-        print('target title > '+str(target_title))
 
         if target_title:
             prev_ip = None
 
             for host in self.list_interesting_hosts():
                 if prev_ip != host['ip']:
-                    print('scanning > '+host['ip'])
                     prev_ip = host['ip']
 
                     title = PageTitle(
@@ -132,7 +180,8 @@ class CloudBuster:
         hosts = []
         targets = self.targets['subdomains'] \
             + self.targets['panels'] \
-            + self.targets['mxs']
+            + self.targets['mxs'] \
+            + self.targets['crimeflare']
 
         for target in targets:
             if target.ip and not target.protected \
@@ -141,12 +190,5 @@ class CloudBuster:
                     'ip': target.ip,
                     'description': target.domain+' / '+target.name
                 })
-
-        if self.crimeflare_ip:
-            hosts.append({
-                'ip': self.crimeflare_ip,
-                'description': self.targets['main'].domain
-                + ' / from crimeflare.com db'
-            })
 
         return hosts
