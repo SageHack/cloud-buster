@@ -51,18 +51,15 @@ class CloudBuster:
             if self.domain in line:
                 crimeflare_ip = line.partition(' ')[2].rstrip()
                 return self.scan([Target(crimeflare_ip, 'crimeflare')])
-        else:
-            return None
 
     def scan_mxs(self):
         mxs = MxRecords(self.domain).__get__()
-        if not mxs:
-            return
-        targets = [
-            Target(mx, 'mx', timeout=1)
-            for mx in mxs
-        ]
-        return self.scan(targets)
+        if mxs:
+            targets = [
+                Target(mx, 'mx', timeout=1)
+                for mx in mxs
+            ]
+            return self.scan(targets)
 
     def scan(self, targets):
         for target in targets:
