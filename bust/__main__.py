@@ -30,7 +30,6 @@ def scan(args):
             return
 
     if 'subdomains' in args.scan:
-        print(args.dept)
         if 'simple' in args.dept:
             dept = int(30)
         elif 'normal' in args.dept:
