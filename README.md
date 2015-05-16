@@ -4,6 +4,22 @@ A security tool that aim at doing the following
 * Scan domains for know vulnerabilities that allow to find ip
 * Dictionary scan subdomains to find ips outside of CF network
 
+# Examples
+* python3 lists/update.py
+* python3 bust mydomain.com
+* python3 bust mydomain.com --scan crimeflare
+* python3 bust mydomain.com --scan subdomains mx
+* python3 bust mydomain.com --scan subdomains --sub www www2 ftp direct
+* python3 bust mydomain.com --dept normal
+* python3 bust domainlist.txt (with any other options)
+* python3 bust mydomain.com --dept full
+
+# Using domain lists
+Use a text file with one domain per line, nothing else
+
+# Updating lists
+CrimeFlare DB is updated every two weeks, the GitHub repo might not be up to date with the latest list. You should use the update tool to get the latests lists.
+
 # Tested OSes
 * Debian
 * Ubuntu
@@ -11,14 +27,14 @@ A security tool that aim at doing the following
 * Void
 * Parabola
 
-# How to use (ubuntu)
+# How to use (Ubuntu)
 * sudo apt-get install python3 python3-pip
 * pip3 install dnspython3
 * git clone https://github.com/SageHack/cloudflare-resolver.git
 * cd cloud-buster
 * python3 bust -h
 
-# How to use (debian)
+# How to use (Debian)
 * su root
 * apt-get remove python3
 * apt-get autoremove
@@ -40,10 +56,6 @@ A security tool that aim at doing the following
 * cd cloud-buster
 * python3 bust -h
 
-# How to use (Arch and Parabola)
-* pacman -Sy python python-pip
-
-
 # How to use (Void)
 * xbps-install python3 python-pip
 * pip install dnspython3
@@ -51,18 +63,5 @@ A security tool that aim at doing the following
 * cd cloud-buster
 * python3 bust -h
 
-# Examples
-* python3 lists/update.py
-* python3 bust mydomain.com
-* python3 bust mydomain.com --scan crimeflare
-* python3 bust mydomain.com --scan subdomains mx
-* python3 bust mydomain.com --scan subdomains --sub www www2 ftp direct
-* python3 bust mydomain.com --scan panels --pan cpanel cpanel:ssl whm
-* python3 bust domainlist.txt
-* python3 bust domainlist.txt (with any other options)
-
-# Using domain lists
-Use a text file with one domain per line, nothing else
-
-# Updating lists
-CrimeFlare DB is updated every two weeks, the GitHub repo might not be up to date with the latest list. You should use the update tool to get the latests lists.
+# How to use (Arch and Parabola)
+* pacman -Sy python python-pip
