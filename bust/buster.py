@@ -35,9 +35,13 @@ class CloudBuster:
 
         return self.target['main'].protected
 
-    def scan_subdomains(self, subdomains=None):
-        toscan = subdomains if subdomains else \
-            open('lists/subdomains').read().splitlines()
+    def scan_subdomains(self, subdomains=None, dept=None):
+        if subdomains:
+            toscan = subdomains
+        else:
+            toscan = open('lists/subdomains').read().splitlines()
+            if dept:
+                del toscan[dept:]
 
         targets = [
             Target(sub+'.'+self.domain, 'subdomain', timeout=5)
