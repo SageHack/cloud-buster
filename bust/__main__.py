@@ -30,16 +30,15 @@ def scan(args):
             return
 
     if 'subdomains' in args.scan:
-        if 'simple' in args.dept:
-            dept = int(30)
-        elif 'normal' in args.dept:
-            dept = int(100)
-        elif 'full' in args.dept:
-            dept = None
+        dept = {
+            'simple': int(30),
+            'normal': int(100),
+            'full': None
+        }
 
         target_found = buster.scan_subdomains(
             args.sub if args.sub else None,
-            dept
+            dept[args.dept]
         )
 
         if target_found:
