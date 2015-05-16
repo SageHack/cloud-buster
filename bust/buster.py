@@ -8,17 +8,14 @@ class CloudBuster:
 
     def __init__(self, domain):
         self.domain = domain
-        self.targets = {
+        self.target = {
             'main': None,
-            'subdomains': [],
-            'mxs': [],
-            'crimeflare': []
+            'other': []
         }
-        self.crimeflare_ip = None
 
     def resolving(self):
-        if self.targets['main']:
-            if self.targets['main'].ip:
+        if self.target['main']:
+            if self.target['main'].ip:
                 return True
 
         return False
@@ -30,35 +27,34 @@ class CloudBuster:
     def scan_main(self):
         target = Target(self.domain, 'target')
         target.print_infos()
-        self.targets['main'] = target
+        self.target['main'] = target
 
     def protected(self):
-        if not self.targets['main'] or type(self.targets['main']) != Target:
+        if not self.target['main'] or type(self.target['main']) != Target:
             return False
 
-        return self.targets['main'].protected
+        return self.target['main'].protected
 
     def scan_subdomains(self, subdomains=None):
-        if subdomains:
-            toscan = subdomains
-        else:
-            toscan = open('lists/subdomains').read().splitlines()
+        toscan = subdomains if subdomains else \
+            open('lists/subdomains').read().splitlines()
+
         targets = [
             Target(sub+'.'+self.domain, 'subdomain', timeout=5)
             for sub in toscan
         ]
-        return self.scan(targets, 'subdomains')
 
-    def search_crimeflare(self):
-        targets = []
+        return self.scan(targets)
+
+    def scan_crimeflare(self):
         for line in open('lists/ipout'):
             if self.domain in line:
                 crimeflare_ip = line.partition(' ')[2].rstrip()
-                target = Target(crimeflare_ip, 'crimeflare')
-                targets.append(target)
-        return self.scan(targets, 'crimeflare')
+                return self.scan([Target(crimeflare_ip, 'crimeflare')])
+        else:
+            return None
 
-    def scan_mx_records(self):
+    def scan_mxs(self):
         mxs = MxRecords(self.domain).__get__()
         if not mxs:
             return
@@ -66,13 +62,13 @@ class CloudBuster:
             Target(mx, 'mx', timeout=1)
             for mx in mxs
         ]
-        return self.scan(targets, 'mxs')
+        return self.scan(targets)
 
-    def scan(self, target_list, target_type):
-        for target in target_list:
+    def scan(self, targets):
+        for target in targets:
             target.print_infos()
             if self.is_interesting(target):
-                self.targets[target_type].append(target)
+                self.target['other'].append(target)
                 if self.match(target):
                     return target
         return None
@@ -81,23 +77,26 @@ class CloudBuster:
         return target.ip and not target.protected
 
     def match(self, possible_target):
-        main_target = self.targets['main']
+        main_target = self.target['main']
+
         main_target.title = PageTitle(
             'http://'+main_target.domain
         ).__get__()
+
         possible_target.title = PageTitle(
             'http://'+possible_target.ip,
             main_target.domain
         ).__get__()
+
         return main_target.title == possible_target.title
 
     def scan_summary(self):
         print('[SCAN SUMMARY]')
 
-        if self.targets['main']:
-            print('Target: '+self.targets['main'].domain)
-            print('> ip: '+str(self.targets['main'].ip))
-            print('> protected: '+str(self.targets['main'].protected))
+        if self.target['main']:
+            print('Target: '+self.target['main'].domain)
+            print('> ip: '+str(self.target['main'].ip))
+            print('> protected: '+str(self.target['main'].protected))
 
         print('[interesting ips]')
 
@@ -106,9 +105,7 @@ class CloudBuster:
 
     def list_interesting_hosts(self):
         hosts = []
-        targets = self.targets['subdomains'] \
-            + self.targets['mxs'] \
-            + self.targets['crimeflare']
+        targets = self.target['other']
 
         for target in targets:
             if self.is_interesting(target) \

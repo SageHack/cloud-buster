@@ -15,24 +15,24 @@ def scan(args):
         print('>> NOT BEHIND CLOUDFLARE <<')
         return
 
-    if 'subdomains' in args.scan:
-        target_found = buster.scan_subdomains(
-            args.sub if args.sub else None
-        )
+    if 'mx' in args.scan:
+        target_found = buster.scan_mxs()
 
         if target_found:
             print('>> MATCH <<')
             return
 
     if 'crimeflare' in args.scan:
-        target_found = buster.search_crimeflare()
+        target_found = buster.scan_crimeflare()
 
         if target_found:
             print('>> MATCH <<')
             return
 
-    if 'mx' in args.scan:
-        target_found = buster.scan_mx_records()
+    if 'subdomains' in args.scan:
+        target_found = buster.scan_subdomains(
+            args.sub if args.sub else None
+        )
 
         if target_found:
             print('>> MATCH <<')
