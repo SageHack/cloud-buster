@@ -2,7 +2,6 @@ from cloudflarenetwork import CloudFlareNetwork
 from descriptor.mxrecords import MxRecords
 from descriptor.pagetitle import PageTitle
 from target import Target
-from panels import PANELS
 
 
 class CloudBuster:
@@ -12,7 +11,6 @@ class CloudBuster:
         self.targets = {
             'main': None,
             'subdomains': [],
-            'panels': [],
             'mxs': [],
             'crimeflare': []
         }
@@ -50,20 +48,6 @@ class CloudBuster:
             for sub in toscan
         ]
         return self.scan(targets, 'subdomains')
-
-    def scan_panels(self, panels=None):
-        targets = []
-        for panel in PANELS:
-            if not panels or panel['name'] in panels:
-                target = Target(
-                    domain=self.domain,
-                    name=panel['name']+':'+str(panel['port']),
-                    port=panel['port'],
-                    timeout=2,
-                    ssl=panel['ssl']
-                )
-                targets.append(target)
-        return self.scan(targets, 'panels')
 
     def search_crimeflare(self):
         targets = []
@@ -123,7 +107,6 @@ class CloudBuster:
     def list_interesting_hosts(self):
         hosts = []
         targets = self.targets['subdomains'] \
-            + self.targets['panels'] \
             + self.targets['mxs'] \
             + self.targets['crimeflare']
 

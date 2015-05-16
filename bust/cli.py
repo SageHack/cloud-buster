@@ -1,5 +1,4 @@
 import argparse
-from panels import PANELS
 
 parser = argparse.ArgumentParser(
     description='Default behavior is scan everything.'
@@ -13,7 +12,7 @@ parser.add_argument(
     help='Domain name or file with name list, one per line'
 )
 
-scan_choices = 'subdomains, panels, crimeflare, mx'
+scan_choices = 'subdomains, crimeflare, mx'
 parser.add_argument(
     '--scan',
     metavar='OPTION',
@@ -28,15 +27,6 @@ parser.add_argument(
     metavar='SUBDOMAIN',
     nargs='*',
     help='Scan specified subdomains'
-)
-
-
-panel_list = [pan['name'] for pan in PANELS]
-parser.add_argument(
-    '--pan',
-    metavar='PANEL',
-    nargs='*',
-    help=str(panel_list)
 )
 
 args = parser.parse_args()
