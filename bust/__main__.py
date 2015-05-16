@@ -15,15 +15,15 @@ def scan(args):
         print('>> NOT BEHIND CLOUDFLARE <<')
         return
 
-    if 'mx' in args.scan:
-        target_found = buster.scan_mxs()
+    if 'crimeflare' in args.scan:
+        target_found = buster.scan_crimeflare()
 
         if target_found:
             print('>> MATCH <<')
             return
 
-    if 'crimeflare' in args.scan:
-        target_found = buster.scan_crimeflare()
+    if 'mx' in args.scan:
+        target_found = buster.scan_mxs()
 
         if target_found:
             print('>> MATCH <<')
