@@ -16,10 +16,9 @@ def scan(args):
         return
 
     if 'subdomains' in args.scan:
-        if args.sub:
-            target_found = buster.scan_subdomains(args.sub)
-        else:
-            target_found = buster.scan_subdomains()
+        target_found = buster.scan_subdomains(
+            args.sub if args.sub else None
+        )
 
         if target_found:
             print('>> MATCH <<')
@@ -27,10 +26,9 @@ def scan(args):
 
     # TODO : Make this useful, cause it's not solving anything
     if 'panels' in args.scan:
-        if args.pan:
-            target_found = buster.scan_panels(args.pan)
-        else:
-            target_found = buster.scan_panels()
+        target_found = buster.scan_panels(
+            args.pan if args.sub else None
+        )
 
         if target_found:
             print('>> MATCH <<')
@@ -52,6 +50,7 @@ def scan(args):
 
     buster.scan_summary()
     print('>> UNABLE TO CONFIRM <<')
+
 
 def scan_list(args):
     file = args.target
