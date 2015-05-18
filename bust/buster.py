@@ -60,7 +60,7 @@ class CloudBuster:
         mxs = MxRecords(self.domain).__get__()
         if mxs:
             targets = [
-                Target(mx, 'mx', timeout=1)
+                Target(mx, 'mx', timeout=5)
                 for mx in mxs
             ]
             return self.scan(targets)

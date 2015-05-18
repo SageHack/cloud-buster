@@ -5,7 +5,7 @@ class HttpResponse(object):
 
     responses = {}
 
-    def __init__(self, domain, port=None, timeout=5, ssl=False):
+    def __init__(self, domain, port=None, timeout=10, ssl=False):
         self.domain = domain
         self.timeout = timeout
         self.ssl = ssl
