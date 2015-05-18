@@ -65,7 +65,7 @@ class Target:
 
     @property
     def protected(self):
-        return bool(self.cloudflare_ray)
+        return bool(self.cloudflare_ip) or bool(self.cloudflare_ray)
 
     def print_infos(self):
         print('['+self.name+'] '+self.domain)
