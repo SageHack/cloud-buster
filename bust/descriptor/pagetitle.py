@@ -22,7 +22,7 @@ class PageTitle(object):
         request = urllib.request.Request(url=self.url, headers=self.headers)
 
         try:
-            html = urllib.request.urlopen(request, timeout=10).read()
+            html = urllib.request.urlopen(request, timeout=20).read()
         except:
             html = None
 
