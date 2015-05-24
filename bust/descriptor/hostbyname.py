@@ -13,7 +13,8 @@ class HostByName(object):
             return self.ips[self.domain]
 
         try:
-            ip = socket.gethostbyname(self.domain)
+            #ip = socket.gethostbyname(self.domain)
+            ip = socket.getaddrinfo(self.domain, 80)[1][4][0]
         except:
             ip = None
 
