@@ -1,6 +1,7 @@
 from cloudflarenetwork import CloudFlareNetwork
 from descriptor.mxrecords import MxRecords
 from descriptor.pagetitle import PageTitle
+from options import Options
 from target import Target
 
 
@@ -78,6 +79,10 @@ class CloudBuster:
         return target.ip and not target.protected
 
     def match(self, possible_target):
+
+        if Options.SCAN_EVERYTHING:
+            return False
+
         main_target = self.target['main']
 
         main_target.title = PageTitle(

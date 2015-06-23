@@ -1,5 +1,6 @@
 from buster import CloudBuster
 from cli import args, parser
+from options import Options
 import os.path
 
 
@@ -13,7 +14,8 @@ def scan(args):
 
     if not buster.protected():
         print('>> NOT BEHIND CLOUDFLARE <<')
-        return
+        if not Options.SCAN_ANYWAY:
+            return
 
     if 'crimeflare' in args.scan:
         target_found = buster.scan_crimeflare()
