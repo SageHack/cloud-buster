@@ -69,7 +69,7 @@ class Target:
 
     def print_infos(self):
         print('['+self.name+'] '+self.domain)
-        if not self.ip:
+        if not self.ip or self.status is None:
             return
 
         print(
@@ -88,3 +88,8 @@ class Target:
                     self.reason if self.reason else ''
                 )
             )
+        else:
+            print(
+                '> status: %s %s' % (self.status, self.reason)
+            )
+

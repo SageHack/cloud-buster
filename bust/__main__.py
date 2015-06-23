@@ -47,6 +47,15 @@ def scan(args):
             print('>> MATCH <<')
             return
 
+    # TODO : Make this useful, cause it's not solving anything
+    if 'panels' in args.scan:
+        target_found = buster.scan_panels(
+            args.pan if args.sub else None
+        )
+        if target_found:
+            print('>> MATCH <<')
+            return
+
     buster.scan_summary()
     print('>> UNABLE TO CONFIRM <<')
 
