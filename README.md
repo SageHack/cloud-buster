@@ -34,7 +34,14 @@ CrimeFlare DB is updated every two weeks, the GitHub repo might not be up to dat
 * cd cloud-buster
 * python3 bust -h
 
-# How to use (Debian)
+# How to use (Debian 9)
+* su
+* apt install python3-pip
+* pip3 install dnspython3
+* cd cloud-buster
+* python3 bust -h
+
+# How to use (Debian 8)
 * su root
 * apt-get remove python3
 * apt-get autoremove
