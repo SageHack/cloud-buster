@@ -10,9 +10,10 @@ A security tool that aim at doing the following
 * python3 bust mydomain.com --scan crimeflare
 * python3 bust mydomain.com --scan subdomains mx
 * python3 bust mydomain.com --scan subdomains --sub www www2 ftp direct
+* python3 bust mydomain.com --scan panels
 * python3 bust mydomain.com --dept normal
-* python3 bust domainlist.txt (with any other options)
 * python3 bust mydomain.com --dept full
+* python3 bust domainlist.txt (with any other options)
 
 # Using domain lists
 Use a text file with one domain per line, nothing else
