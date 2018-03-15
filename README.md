@@ -54,6 +54,7 @@ python3 bust -h
 su
 apt install python3-pip
 pip3 install dnspython3
+git clone https://github.com/SageHack/cloudflare-resolver.git
 cd cloud-buster
 python3 bust -h
 ```
@@ -94,4 +95,8 @@ python3 bust -h
 # How to use (Arch and Parabola)
 ```
 pacman -Sy python python-pip
+pip install dnspython3
+git clone https://github.com/SageHack/cloudflare-resolver.git
+cd cloud-buster
+python3 bust -h
 ```
