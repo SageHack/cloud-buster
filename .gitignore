@@ -1,2 +1,6 @@
+lists/x*
+lists/ipout-hosts
+lists/ipout-protected
+
 *.pyc
 *.txt
