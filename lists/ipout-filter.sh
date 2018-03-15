@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Save working and protected hosts from Crimeflare DB.
-# Take about 14 hours to complete.
+# Take about 6 hours to complete.
 # 
 # Using CTRL+C kills CURLs command and not the bash script
 # use `killall ipout-filter.sh`
@@ -46,4 +46,5 @@ wait
 rm -f x*
 rm -f ipout-hosts
 
-cat ipout-protected | cut -d' ' -f1 | sort | uniq > ipout-protected
+cat ipout-protected | cut -d' ' -f1 | sort | uniq > ipout-protected.sorted
+mv ipout-protected.sorted ipout-protected
