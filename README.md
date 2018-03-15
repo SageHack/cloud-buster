@@ -16,11 +16,11 @@ A security tool that aim at doing the following
 * `python3 bust domainlist.txt` (with any options)
 
 # Other examples
-* Use a single can technique
+* Use a single scan technique
 * `python3 bust mydomain.com --scan crimeflare`
 * Chose your own mix of scan techniques
 * `python3 bust mydomain.com --scan subdomains mx`
-* Scan specific domains
+* Scan specific subdomains
 * `python3 bust mydomain.com --scan subdomains --sub www www2 ftp direct`
 * Scan specific admin panels
 * `python3 bust mydomain.com --scan panels --pan cpanel cpanel:ssl whm`
