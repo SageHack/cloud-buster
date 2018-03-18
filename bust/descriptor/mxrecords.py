@@ -29,11 +29,12 @@ class MxRecords(object):
             recs = None
 
         if not Options.SCAN_EVERYTHING:
-            recs = [
-                rec
-                for rec in recs
-                if rec.endswith(self.domain)
-            ]
+            if recs:
+                recs = [
+                    rec
+                    for rec in recs
+                    if rec.endswith(self.domain)
+                ]
 
         self.records[self.domain] = recs
         return recs
