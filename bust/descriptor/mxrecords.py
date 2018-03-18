@@ -1,4 +1,5 @@
 import re
+from options import Options
 
 
 class MxRecords(object):
@@ -26,6 +27,13 @@ class MxRecords(object):
             ]
         else:
             recs = None
+
+        if not Options.SCAN_EVERYTHING:
+            recs = [
+                rec
+                for rec in recs
+                if rec.endswith(self.domain)
+            ]
 
         self.records[self.domain] = recs
         return recs
