@@ -9,11 +9,11 @@ def scan(args):
     buster.scan_main()
 
     if not buster.resolving():
-        print('>> NOT FOUND <<')
+        print('>> NOT FOUND <<', flush=True)
         return
 
     if not buster.protected():
-        print('>> NOT BEHIND CLOUDFLARE <<')
+        print('>> NOT BEHIND CLOUDFLARE <<', flush=True)
         if not Options.SCAN_ANYWAY:
             return
 
@@ -21,14 +21,14 @@ def scan(args):
         target_found = buster.scan_crimeflare()
 
         if target_found:
-            print('>> MATCH <<')
+            print('>> MATCH <<', flush=True)
             return
 
     if 'mx' in args.scan:
         target_found = buster.scan_mxs()
 
         if target_found:
-            print('>> MATCH <<')
+            print('>> MATCH <<', flush=True)
             return
 
     if 'subdomains' in args.scan:
@@ -44,7 +44,7 @@ def scan(args):
         )
 
         if target_found:
-            print('>> MATCH <<')
+            print('>> MATCH <<', flush=True)
             return
 
     # TODO : Make this useful, cause it's not solving anything
@@ -53,18 +53,18 @@ def scan(args):
             args.pan if args.sub else None
         )
         if target_found:
-            print('>> MATCH <<')
+            print('>> MATCH <<', flush=True)
             return
 
     buster.scan_summary()
-    print('>> UNABLE TO CONFIRM <<')
+    print('>> UNABLE TO CONFIRM <<', flush=True)
 
 
 def scan_list(args):
     file = args.target
     for target in open(file).read().splitlines():
         args.target = target
-        print('====================================')
+        print('====================================', flush=True)
         scan(args)
 
 

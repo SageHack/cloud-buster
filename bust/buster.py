@@ -1,3 +1,4 @@
+from os import linesep
 from cloudflarenetwork import CloudFlareNetwork
 from descriptor.mxrecords import MxRecords
 from descriptor.pagetitle import PageTitle
@@ -24,7 +25,7 @@ class CloudBuster:
 
     def check_ip(self, ip):
         net = CloudFlareNetwork()
-        print(net.in_range(ip))
+        print(net.in_range(ip), flush=True)
 
     def scan_main(self):
         target = Target(self.domain, 'target')
@@ -114,17 +115,20 @@ class CloudBuster:
         return main_target.title == possible_target.title
 
     def scan_summary(self):
-        print('[SCAN SUMMARY]')
+        print('[SCAN SUMMARY]', flush=True)
 
         if self.target['main']:
-            print('Target: '+self.target['main'].domain)
-            print('> ip: '+str(self.target['main'].ip))
-            print('> protected: '+str(self.target['main'].protected))
+            print(
+                'Target: '+self.target['main'].domain+linesep
+                + '> ip: '+str(self.target['main'].ip)+linesep
+                + '> protected: '+str(self.target['main'].protected),
+                flush=True
+            )
 
-        print('[interesting ips]')
+        print('[interesting ips]', flush=True)
 
         for host in self.list_interesting_hosts():
-            print(host['ip']+' > '+host['description'])
+            print(host['ip']+' > '+host['description'], flush=True)
 
     def list_interesting_hosts(self):
         hosts = []

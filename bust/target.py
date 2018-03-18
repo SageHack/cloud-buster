@@ -68,7 +68,7 @@ class Target:
         return bool(self.cloudflare_ip) or bool(self.cloudflare_ray)
 
     def print_infos(self):
-        print('['+self.name+'] '+self.domain)
+        print('['+self.name+'] '+self.domain, flush=True)
         if not self.ip or self.status is None:
             return
 
@@ -77,7 +77,7 @@ class Target:
                 self.ip,
                 'yes' if self.cloudflare_ip else 'no',
                 ' RAY-'+self.cloudflare_ray if self.cloudflare_ray else ''
-            )
+            ), flush=True
         )
 
         if self.enabled:
@@ -86,10 +86,10 @@ class Target:
                     self.enabled+' -' if self.enabled else '',
                     self.status,
                     self.reason if self.reason else ''
-                )
+                ), flush=True
             )
         else:
             print(
-                '> status: %s %s' % (self.status, self.reason)
+                '> status: %s %s' % (self.status, self.reason),
+                flush=True
             )
-

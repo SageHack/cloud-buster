@@ -4,3 +4,4 @@ lists/ipout-protected
 
 *.pyc
 *.txt
+*.log
