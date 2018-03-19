@@ -3,6 +3,11 @@ from cli import args, parser
 from options import Options
 import os.path, signal, sys
 
+logo = """
+============ The =====,---/V\\
+==== CloudBUSTER ====~|__(o.o)
+=== by @SageHack =====UU  UU
+"""
 
 def scan(args):
     buster = CloudBuster(args.target)
@@ -99,6 +104,7 @@ signal.signal(signal.SIGINT, stop_execution)
 
 
 def main(args):
+    print(logo)
     if not args.target:
         parser.print_help()
     if os.path.isfile(args.target):
