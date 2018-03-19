@@ -9,7 +9,7 @@ def scan(args):
     buster.scan_main()
 
     if not buster.resolving():
-        print('>> NOT FOUND <<', flush=True)
+        print('>> CANT RESOLVE HOST <<', flush=True)
         return
 
     if not buster.protected():
@@ -21,14 +21,14 @@ def scan(args):
         target_found = buster.scan_crimeflare()
 
         if target_found:
-            print('>> MATCH <<', flush=True)
+            print_match(buster.target['main'], target_found, 'crimeflare')
             return
 
     if 'mx' in args.scan:
         target_found = buster.scan_mxs()
 
         if target_found:
-            print('>> MATCH <<', flush=True)
+            print_match(buster.target['main'], target_found, 'mx')
             return
 
     if 'subdomains' in args.scan:
@@ -44,7 +44,7 @@ def scan(args):
         )
 
         if target_found:
-            print('>> MATCH <<', flush=True)
+            print_match(buster.target['main'], target_found, 'subdomain')
             return
 
     # TODO : Make this useful, cause it's not solving anything
@@ -53,11 +53,16 @@ def scan(args):
             args.pan if args.sub else None
         )
         if target_found:
-            print('>> MATCH <<', flush=True)
+            print_match(buster.target['main'], target_found, 'panel')
             return
 
     buster.scan_summary()
-    print('>> UNABLE TO CONFIRM <<', flush=True)
+    print(
+        '>> UNABLE TO CONFIRM [%s;interesting ips (%d)] <<' % (
+            buster.target['main'].domain,
+            len(buster.list_interesting_hosts()),
+        ), flush=True
+    )
 
 
 def scan_list(args):
@@ -66,6 +71,19 @@ def scan_list(args):
         args.target = target
         print('====================================', flush=True)
         scan(args)
+
+
+def print_match(target_main, target_found, method):
+    print(
+        '>> MATCH [%s;%s;%s;%s;%s;%s] <<' % (
+            target_main.domain,
+            method,
+            target_found.domain if target_found.domain != target_found.ip else '',
+            target_found.ip,
+            target_found.status,
+            target_found.reason,
+        ), flush=True
+    )
 
 
 def stop_execution(signal, frame):
