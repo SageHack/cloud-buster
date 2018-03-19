@@ -1,7 +1,7 @@
 from buster import CloudBuster
 from cli import args, parser
 from options import Options
-import os.path
+import os.path, signal, sys
 
 
 def scan(args):
@@ -68,6 +68,18 @@ def scan_list(args):
         scan(args)
 
 
+def stop_execution(signal, frame):
+    '''
+    Unfortunately, Request threads consume SIGINT. Given the app
+    is 95% of the time in a request call, it doesn't help much.
+    See: https://github.com/SageHack/cloud-buster/issues/14
+    > Thanks to anyone how can fix that.
+    '''
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, stop_execution)
+
+
 def main(args):
     if not args.target:
         parser.print_help()
@@ -75,6 +87,5 @@ def main(args):
         scan_list(args)
     else:
         scan(args)
-
 
 main(args)
