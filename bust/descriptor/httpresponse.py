@@ -45,7 +45,7 @@ class HttpResponse(object):
                 }
             )
             response = connection.getresponse()
-        except:
+        except (OSError, ConnectionError):
             response = None
 
         connection.close()

@@ -16,7 +16,7 @@ class MxRecords(object):
         try:
             import dns.resolver
             mxs = dns.resolver.query(self.domain, 'MX')
-        except:
+        except (OSError, dns.resolver.NoAnswer):
             mxs = None
 
         if mxs:

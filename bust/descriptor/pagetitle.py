@@ -1,4 +1,5 @@
 import urllib.request
+from urllib.error import HTTPError
 import re
 
 
@@ -22,8 +23,8 @@ class PageTitle(object):
         request = urllib.request.Request(url=self.url, headers=self.headers)
 
         try:
-            html = urllib.request.urlopen(request, timeout=20).read()
-        except:
+            html = urllib.request.urlopen(request, timeout=1).read()
+        except (OSError, HTTPError):
             html = None
 
         title = self.parse_title(html)

@@ -1,7 +1,7 @@
 from buster import CloudBuster
 from cli import args, parser
 from options import Options
-import os.path, signal, sys
+import os.path, sys
 
 logo = """
 ============ The =====,---/V\\
@@ -112,4 +112,8 @@ def main(args):
     else:
         scan(args)
 
-main(args)
+try:
+    main(args)
+except KeyboardInterrupt:
+    print('>> INTERRUPTED BY USER <<')
+    sys.exit()

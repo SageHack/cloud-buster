@@ -34,7 +34,7 @@ class Target:
     def cloudflare_ray(self):
         try:
             return self.response.getheader('CF-RAY')
-        except:
+        except (OSError, ConnectionError, AttributeError):
             return None
 
     @property
@@ -46,21 +46,21 @@ class Target:
                     + self.response.getheader('X-Powered-By')
             else:
                 return self.response.getheader('Server')
-        except:
+        except (OSError, ConnectionError, AttributeError):
             return None
 
     @property
     def status(self):
         try:
             return self.response.status
-        except:
+        except (OSError, ConnectionError, AttributeError):
             return None
 
     @property
     def reason(self):
         try:
             return self.response.reason
-        except:
+        except (OSError, ConnectionError, AttributeError):
             return None
 
     @property
