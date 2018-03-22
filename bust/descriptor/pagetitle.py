@@ -21,9 +21,10 @@ class PageTitle(object):
             return self.titles[self.id]
 
         request = urllib.request.Request(url=self.url, headers=self.headers)
+        print(self.url)
 
         try:
-            html = urllib.request.urlopen(request, timeout=1).read()
+            html = urllib.request.urlopen(request, timeout=10).read()
         except (OSError, HTTPError):
             html = None
 
