@@ -91,18 +91,6 @@ def print_match(target_main, target_found, method):
     )
 
 
-def stop_execution(signal, frame):
-    '''
-    Unfortunately, Request threads consume SIGINT. Given the app
-    is 95% of the time in a request call, it doesn't help much.
-    See: https://github.com/SageHack/cloud-buster/issues/14
-    > Thanks to anyone how can fix that.
-    '''
-    sys.exit(0)
-
-signal.signal(signal.SIGINT, stop_execution)
-
-
 def main(args):
     print(logo)
     if not args.target:
@@ -111,6 +99,7 @@ def main(args):
         scan_list(args)
     else:
         scan(args)
+
 
 try:
     main(args)
