@@ -1,11 +1,12 @@
 import urllib.request
 from urllib.error import HTTPError
 import re
+import ssl
 
 
 class PageTitle(object):
 
-    titles = {}
+    opened = {}
 
     def __init__(self, url, host=None):
         self.url = url
@@ -17,23 +18,35 @@ class PageTitle(object):
             self.id = self.url
 
     def __get__(self, obj=None, objtype=None):
-        if self.id in self.titles:
-            return self.titles[self.id]
+        if self.id in self.opened:
+            return self.opened[self.id].title
 
         request = urllib.request.Request(url=self.url, headers=self.headers)
-        print(self.url)
 
         try:
-            html = urllib.request.urlopen(request, timeout=10).read()
+            opened = urllib.request.urlopen(
+                request,
+                timeout=10,
+                context=self.context
+            )
+            html = opened.read()
         except (OSError, HTTPError):
+            opened = None
             html = None
 
         title = self.parse_title(html)
-        self.titles[self.id] = title
+        self.opened[self.id] = opened
         return title
 
     def __set__(self, obj=None, val=None):
         raise AttributeError
+
+    @property
+    def context(self):
+        context = ssl.create_default_context()
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
+        return context
 
     @property
     def headers(self):
