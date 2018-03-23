@@ -75,6 +75,9 @@ class CloudBuster:
                 crimeflare_ip = line.partition(' ')[2].rstrip()
                 return self.scan([Target(crimeflare_ip, 'crimeflare')])
 
+    def scan_dnsdumpster(self):
+        """ADD YOUR CODE HERE"""
+
     def scan_mxs(self):
         mxs = MxRecords(self.domain).__get__()
         if mxs:

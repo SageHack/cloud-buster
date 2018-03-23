@@ -12,13 +12,13 @@ parser.add_argument(
     help='Domain name or file with name list, one per line'
 )
 
-scan_choices = 'subdomains, panels, crimeflare, mx'
+scan_choices = 'mx, crimeflare, dnsdumpster, subdomains, panels'
 parser.add_argument(
     '--scan',
     metavar='OPTION',
     nargs='*',
     choices=scan_choices.split(', '),
-    default='subdomains crimeflare mx',
+    default='mx crimeflare dnsdumpster subdomains',
     help=scan_choices
 )
 

@@ -22,6 +22,13 @@ def scan(args):
         if not Options.SCAN_ANYWAY:
             return
 
+    if 'mx' in args.scan:
+        target_found = buster.scan_mxs()
+
+        if target_found:
+            print_match(buster.target['main'], target_found, 'mx')
+            return
+
     if 'crimeflare' in args.scan:
         target_found = buster.scan_crimeflare()
 
@@ -29,11 +36,11 @@ def scan(args):
             print_match(buster.target['main'], target_found, 'crimeflare')
             return
 
-    if 'mx' in args.scan:
-        target_found = buster.scan_mxs()
+    if 'dnsdumpster' in args.scan:
+        target_found = buster.scan_dnsdumpster()
 
         if target_found:
-            print_match(buster.target['main'], target_found, 'mx')
+            print_match(buster.target['main'], target_found, 'dnsdumpster')
             return
 
     if 'subdomains' in args.scan:
