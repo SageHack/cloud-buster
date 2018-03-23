@@ -6,6 +6,7 @@ from options import Options
 from target import Target
 from DNSDumpsterAPI import DNSDumpsterAPI
 from panels import PANELS
+import re
 
 
 class CloudBuster:
@@ -78,7 +79,23 @@ class CloudBuster:
 
     def scan_dnsdumpster(self):
         results = DNSDumpsterAPI().search(self.domain)
-        print(results['dns_records']['host'])
+        records = results['dns_records']
+
+        if 'host' in records:
+            ips = []
+            domains = []
+
+            for host in records['host']:
+                if not host['provider'].startswith('Cloudflare'):
+                    ips.append(host['ip'])
+                    """For some reason Dumpster API return <br in domains"""
+                    domains.append(re.sub('<br', '', host['domain']))
+
+            targets = [
+                Target(host, 'dnsdumpster', timeout=5)
+                for host in set(domains + ips) 
+            ]
+            return self.scan(targets)
 
     def scan_mxs(self):
         mxs = MxRecords(self.domain).__get__()
