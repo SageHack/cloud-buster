@@ -7,23 +7,24 @@ import ssl
 
 class PageTitle(object):
 
-    opened = {}
+    titles = {}
 
     def __init__(self, url, host=None):
         self.url = url
         self.host = host
 
         if host:
-            self.id = self.url+':'+self.host
+            self.id = self.host+'@'+self.url
         else:
             self.id = self.url
 
     def __get__(self, obj=None, objtype=None):
-        if self.id in self.opened:
-            return self.opened[self.id].title
+        if self.id in self.titles:
+            return self.titles[self.id]
 
         urllib.request.install_opener(self.opener)
         request = urllib.request.Request(url=self.url, headers=self.headers)
+        print('> reading: '+self.id)
 
         try:
             opened = urllib.request.urlopen(
@@ -31,12 +32,13 @@ class PageTitle(object):
                 timeout=10
             )
             html = opened.read()
+            title = self.parse_title(html)
         except (OSError, HTTPError):
             opened = None
             html = None
+            title = None
 
-        title = self.parse_title(html)
-        self.opened[self.id] = opened
+        self.titles[self.id] = title
         return title
 
     def __set__(self, obj=None, val=None):

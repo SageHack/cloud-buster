@@ -109,7 +109,7 @@ class CloudBuster:
 
         possible_target.title = PageTitle(
             'http://'+possible_target.ip,
-            main_target.domain
+            host = main_target.domain
         ).__get__()
 
         return main_target.title == possible_target.title
