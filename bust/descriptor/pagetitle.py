@@ -1,5 +1,6 @@
 import urllib.request
 from urllib.error import HTTPError
+from ipurlredirecthandler import IpUrlRedirectHandler
 import re
 import ssl
 
@@ -21,13 +22,13 @@ class PageTitle(object):
         if self.id in self.opened:
             return self.opened[self.id].title
 
+        urllib.request.install_opener(self.opener)
         request = urllib.request.Request(url=self.url, headers=self.headers)
 
         try:
             opened = urllib.request.urlopen(
                 request,
-                timeout=10,
-                context=self.context
+                timeout=10
             )
             html = opened.read()
         except (OSError, HTTPError):
@@ -42,13 +43,6 @@ class PageTitle(object):
         raise AttributeError
 
     @property
-    def context(self):
-        context = ssl.create_default_context()
-        context.check_hostname = False
-        context.verify_mode = ssl.CERT_NONE
-        return context
-
-    @property
     def headers(self):
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; rv:36.0)' +
@@ -57,6 +51,23 @@ class PageTitle(object):
         if self.host:
             headers['Host'] = self.host
         return headers
+
+    @property
+    def opener(self):
+        handles = []
+
+        """Override redirect handler"""
+        handles.append(IpUrlRedirectHandler())
+
+        """Disable SSL cert verification"""
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        handles.append(urllib.request.HTTPSHandler(context=ctx))
+        
+        opener = urllib.request.build_opener(*handles)
+
+        return opener
 
     def parse_title(self, html):
         html = str(html)
