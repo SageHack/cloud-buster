@@ -4,6 +4,7 @@ from descriptor.mxrecords import MxRecords
 from descriptor.pagetitle import PageTitle
 from options import Options
 from target import Target
+from DNSDumpsterAPI import DNSDumpsterAPI
 from panels import PANELS
 
 
@@ -76,7 +77,8 @@ class CloudBuster:
                 return self.scan([Target(crimeflare_ip, 'crimeflare')])
 
     def scan_dnsdumpster(self):
-        """ADD YOUR CODE HERE"""
+        results = DNSDumpsterAPI().search(self.domain)
+        print(results['dns_records']['host'])
 
     def scan_mxs(self):
         mxs = MxRecords(self.domain).__get__()
