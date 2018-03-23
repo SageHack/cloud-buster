@@ -46,7 +46,7 @@ class Target:
                     + self.response.getheader('X-Powered-By')
             else:
                 return self.response.getheader('Server')
-        except (OSError, ConnectionError, AttributeError):
+        except (OSError, ConnectionError, AttributeError, TypeError):
             return None
 
     @property
