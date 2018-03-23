@@ -4,6 +4,8 @@ A security tool that aim at doing the following
 * Scan domains for know vulnerabilities that allow to find ip
 * Dictionary scan subdomains to find ips outside of CF network
 
+![Screenshot](/screenshot.png?raw=true "Usage example")
+
 # Usage instructions
 * Install (see below) 
 * Download latest CloudFlare IPs and CrimeFlare DB
