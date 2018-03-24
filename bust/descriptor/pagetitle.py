@@ -3,6 +3,7 @@ from urllib.error import HTTPError
 from ipurlredirecthandler import IpUrlRedirectHandler
 import re
 import ssl
+import random
 
 
 class PageTitle(object):
@@ -46,12 +47,17 @@ class PageTitle(object):
 
     @property
     def headers(self):
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; rv:36.0)' +
-            'Gecko/200101 Firefox/36.0'
-        }
+        global uagent
+        headers = {}
+
         if self.host:
             headers['Host'] = self.host
+
+        if 'uagent' not in globals():
+            uagent = random.choice(open('lists/uagents').read().splitlines())
+
+        headers['User-Agent'] = uagent
+
         return headers
 
     @property
