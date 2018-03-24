@@ -6,6 +6,7 @@ from options import Options
 from target import Target
 from DNSDumpsterAPI import DNSDumpsterAPI
 from panels import PANELS
+from ipv6support import IPv6Support
 import re
 
 
@@ -130,7 +131,7 @@ class CloudBuster:
         ).__get__()
 
         possible_target.title = PageTitle(
-            'http://'+possible_target.ip,
+            'http://'+IPv6Support.fix(possible_target.ip),
             host = main_target.domain
         ).__get__()
 
