@@ -25,6 +25,7 @@ def unzip(file):
         myzip.write(file)
     os.remove(file+'.zip')
 
+
 downloads = [
     ['https://www.cloudflare.com/ips-v4', 'lists/ips-v4', None],
     ['https://www.cloudflare.com/ips-v6', 'lists/ips-v6', None],

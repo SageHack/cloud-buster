@@ -6,6 +6,7 @@ In an URL, IPv6 addresses must be surrounded by
 square brackets due to ':' usage.
 """
 
+
 class IPv6Support:
     def fix(ip):
         try:
@@ -15,5 +16,5 @@ class IPv6Support:
 
         if address.version == 6:
             return '['+ip+']'
-        else: 
+        else:
             return ip

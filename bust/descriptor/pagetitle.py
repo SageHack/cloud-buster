@@ -72,7 +72,7 @@ class PageTitle(object):
         ctx.check_hostname = False
         ctx.verify_mode = ssl.CERT_NONE
         handles.append(urllib.request.HTTPSHandler(context=ctx))
-        
+
         opener = urllib.request.build_opener(*handles)
 
         return opener

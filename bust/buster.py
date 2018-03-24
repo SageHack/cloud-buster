@@ -94,7 +94,7 @@ class CloudBuster:
 
             targets = [
                 Target(host, 'dnsdumpster', timeout=5)
-                for host in set(domains + ips) 
+                for host in set(domains + ips)
             ]
             return self.scan(targets)
 
@@ -132,7 +132,7 @@ class CloudBuster:
 
         possible_target.title = PageTitle(
             'http://'+IPv6Support.fix(possible_target.ip),
-            host = main_target.domain
+            host=main_target.domain
         ).__get__()
 
         return main_target.title == possible_target.title

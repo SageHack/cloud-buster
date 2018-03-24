@@ -1,13 +1,15 @@
 from buster import CloudBuster
 from cli import args, parser
 from options import Options
-import os.path, sys
+import os.path
+import sys
 
 logo = """
 ============ The =====,---/V\\
 ==== CloudBUSTER ====~|__(o.o)
 === by @SageHack =====UU  UU
 """
+
 
 def scan(args):
     buster = CloudBuster(args.target)
@@ -90,7 +92,9 @@ def print_match(target_main, target_found, method):
         '>> MATCH [%s;%s;%s;%s;%s;%s] <<' % (
             target_main.domain,
             method,
-            target_found.domain if target_found.domain != target_found.ip else '',
+            target_found.domain
+            if target_found.domain != target_found.ip
+            else target_main.domain,
             target_found.ip,
             target_found.status,
             target_found.reason,

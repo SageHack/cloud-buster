@@ -2,7 +2,8 @@ from panels import PANELS
 import argparse
 
 parser = argparse.ArgumentParser(
-    description='Default behavior is check mx records, subdomains and crimeflare database.'
+    description='Default behavior is check mx records,' +
+    'subdomains and crimeflare database.'
 )
 
 parser.add_argument(
