@@ -61,15 +61,6 @@ def scan(args):
             print_match(buster.target['main'], target_found, 'subdomain')
             return
 
-    # TODO : Make this useful, cause it's not solving anything
-    if 'panels' in args.scan:
-        target_found = buster.scan_panels(
-            args.pan if args.pan else None
-        )
-        if target_found:
-            print_match(buster.target['main'], target_found, 'panel')
-            return
-
     buster.scan_summary()
     print(
         '>> UNABLE TO CONFIRM [%s;interesting ips (%d)] <<' % (

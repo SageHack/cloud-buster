@@ -5,7 +5,6 @@ from descriptor.pagetitle import PageTitle
 from options import Options
 from target import Target
 from DNSDumpsterAPI import DNSDumpsterAPI
-from panels import PANELS
 from ipv6support import IPv6Support
 import re
 
@@ -53,22 +52,6 @@ class CloudBuster:
             Target(sub+'.'+self.domain, 'subdomain', timeout=5)
             for sub in toscan
         ]
-
-        return self.scan(targets)
-
-    def scan_panels(self, panels=None):
-        targets = []
-
-        for panel in PANELS:
-            if not panels or panel['name'] in panels:
-                target = Target(
-                    domain=self.domain,
-                    name=panel['name']+':'+str(panel['port']),
-                    port=panel['port'],
-                    timeout=2,
-                    ssl=panel['ssl']
-                )
-                targets.append(target)
 
         return self.scan(targets)
 

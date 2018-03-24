@@ -13,7 +13,7 @@ A security tool that aim at doing the following
 * Run the fast/simple scan
 * `python3 bust mydomain.com`
 * Run the slow/comprehensive scan
-* `python3 bust mydomain.com --scan mx crimeflare dnsdumpster subdomains panels --dept normal`
+* `python3 bust mydomain.com --scan mx crimeflare dnsdumpster subdomains --dept normal`
 * Scan multiple domains
 * `python3 bust domainlist.txt` (with any options)
 
@@ -24,8 +24,6 @@ A security tool that aim at doing the following
 * `python3 bust mydomain.com --scan subdomains mx`
 * Scan specific subdomains
 * `python3 bust mydomain.com --scan subdomains --sub www www2 ftp direct`
-* Scan specific admin panels
-* `python3 bust mydomain.com --scan panels --pan cpanel cpanel:ssl whm`
 * Scan the 20,000 most popular subdomains on the net
 * `python3 bust mydomain.com --dept full`
 
