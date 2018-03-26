@@ -40,7 +40,7 @@ class CloudBuster:
 
         return self.target['main'].protected
 
-    def scan_subdomains(self, subdomains=None, dept=None):
+    def scan_subdomain(self, subdomains=None, dept=None):
         if subdomains:
             toscan = subdomains
         else:
@@ -81,7 +81,7 @@ class CloudBuster:
             ]
             return self.scan(targets)
 
-    def scan_mxs(self):
+    def scan_mx(self):
         mxs = MxRecords(self.domain).__get__()
         if mxs:
             targets = [
