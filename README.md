@@ -6,6 +6,12 @@ A security tool that aim at doing the following
 
 ![Screenshot](/screenshot.png?raw=true "Usage example")
 
+# Requirements
+ * [Python 3.5](https://www.python.org/downloads/release/python-350/)
+ * [dnspython3 1.14.0](http://www.dnspython.org/kits3/1.14.0/)
+ * libssl
+ * openssl
+
 # Usage instructions
 * Install (see below) 
 * Download latest CloudFlare IPs and CrimeFlare DB
