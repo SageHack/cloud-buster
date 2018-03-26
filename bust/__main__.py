@@ -11,6 +11,28 @@ logo = """
 """
 
 
+def main(args):
+    try:
+        print(logo)
+        if not args.target:
+            parser.print_help()
+        if os.path.isfile(args.target):
+            scan_list(args)
+        else:
+            scan(args)
+    except KeyboardInterrupt:
+        print('>> INTERRUPTED BY USER <<')
+        sys.exit()
+
+
+def scan_list(args):
+    file = args.target
+    for target in open(file).read().splitlines():
+        args.target = target
+        print('====================================', flush=True)
+        scan(args)
+
+
 def scan(args):
     buster = CloudBuster(args.target)
     buster.scan_main()
@@ -23,7 +45,7 @@ def scan(args):
         print('>> NOT BEHIND CLOUDFLARE <<', flush=True)
         if not Options.SCAN_ANYWAY:
             return
-   
+
     for technique in args.scan:
         if technique is 'subdomain':
             found = sub_scan_subdomain(buster, args)
@@ -36,14 +58,12 @@ def scan(args):
     match_not_found(buster)
 
 
-def match_not_found(buster):
-    buster.scan_summary()
-    print(
-        '>> UNABLE TO CONFIRM [%s;interesting ips (%d)] <<' % (
-            buster.target['main'].domain,
-            len(buster.list_interesting_hosts()),
-        ), flush=True
-    )
+def sub_scan(buster, args, technique):
+    scan_technique = getattr(buster, 'scan_'+technique)
+    target_found = scan_technique()
+    if target_found:
+        print_match(buster.target['main'], target_found, technique)
+        return True
 
 
 def sub_scan_subdomain(buster, args):
@@ -63,22 +83,6 @@ def sub_scan_subdomain(buster, args):
         return true
 
 
-def sub_scan(buster, args, technique):
-    scan_technique = getattr(buster, 'scan_'+technique)
-    target_found = scan_technique()
-    if target_found:
-        print_match(buster.target['main'], target_found, technique)
-        return True
-
-
-def scan_list(args):
-    file = args.target
-    for target in open(file).read().splitlines():
-        args.target = target
-        print('====================================', flush=True)
-        scan(args)
-
-
 def print_match(target_main, target_found, method):
     print(
         '>> MATCH [%s;%s;%s;%s;%s;%s] <<' % (
@@ -94,18 +98,14 @@ def print_match(target_main, target_found, method):
     )
 
 
-def main(args):
-    print(logo)
-    if not args.target:
-        parser.print_help()
-    if os.path.isfile(args.target):
-        scan_list(args)
-    else:
-        scan(args)
+def match_not_found(buster):
+    buster.scan_summary()
+    print(
+        '>> UNABLE TO CONFIRM [%s;interesting ips (%d)] <<' % (
+            buster.target['main'].domain,
+            len(buster.list_interesting_hosts()),
+        ), flush=True
+    )
 
 
-try:
-    main(args)
-except KeyboardInterrupt:
-    print('>> INTERRUPTED BY USER <<')
-    sys.exit()
+main(args)
