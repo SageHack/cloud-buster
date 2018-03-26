@@ -80,7 +80,7 @@ def sub_scan_subdomain(buster, args):
 
     if target_found:
         print_match(buster.target['main'], target_found, 'subdomain')
-        return true
+        return True
 
 
 def print_match(target_main, target_found, method):
