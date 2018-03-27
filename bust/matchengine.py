@@ -45,7 +45,7 @@ class MatchEngine:
         if len(s) > 10:
             similarity = SequenceMatcher(None, s1, s2).ratio()
             if similarity > 0.9:
-                print('!! %s similar (%d)' % (method, similarity), flush=True)
+                print('!! %s similar (%.2f)' % (method, similarity), flush=True)
                 return True
 
         return False
