@@ -1,4 +1,5 @@
 import urllib.request
+import http.client
 from urllib.error import HTTPError
 from ipurlredirecthandler import IpUrlRedirectHandler
 from tagparser import TagParser
@@ -82,7 +83,7 @@ class RequestContent(object):
                 timeout=10
             )
             html = opened.read()
-        except (OSError, HTTPError):
+        except (OSError, HTTPError, http.client.BadStatusLine):
             return content
 
         content['status'] = str(opened.status)+' '+opened.reason

@@ -45,7 +45,7 @@ class HttpResponse(object):
                 }
             )
             response = connection.getresponse()
-        except (OSError, ConnectionError):
+        except (OSError, ConnectionError, http.client.BadStatusLine):
             response = None
 
         connection.close()
