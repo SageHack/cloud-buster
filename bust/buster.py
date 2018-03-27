@@ -61,8 +61,12 @@ class CloudBuster:
                 return self.scan([Target(crimeflare_ip, 'crimeflare')])
 
     def scan_dnsdumpster(self):
-        results = DNSDumpsterAPI().search(self.domain)
-        records = results['dns_records']
+        try:
+            results = DNSDumpsterAPI().search(self.domain)
+            records = results['dns_records']
+        except IndexError:
+            results = None
+            records = []
 
         if 'host' in records:
             ips = []
