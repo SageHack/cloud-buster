@@ -47,7 +47,7 @@ def scan(args):
             return
 
     for technique in args.scan:
-        if technique is 'subdomain':
+        if technique == 'subdomain':
             found = sub_scan_subdomain(buster, args)
         else:
             found = sub_scan(buster, args, technique)
