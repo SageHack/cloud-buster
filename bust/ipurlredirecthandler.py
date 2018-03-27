@@ -6,7 +6,7 @@ class IpUrlRedirectHandler(request.HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, hdrs, newurl):
 
         if 'Host' not in req.headers:
-            print('** redirect: '+newurl)
+            print('** redirect: '+newurl, flush=True)
             return super(IpUrlRedirectHandler, self).redirect_request(
                 req, fp, code, msg, hdrs, newurl
             )
@@ -20,7 +20,7 @@ class IpUrlRedirectHandler(request.HTTPRedirectHandler):
         )
         req.headers['Host'] = new_url.hostname
 
-        print('** redirect: '+new_url.hostname+'@'+custom_url)
+        print('** redirect: '+new_url.hostname+'@'+custom_url, flush=True)
         return super(IpUrlRedirectHandler, self).redirect_request(
             req, fp, code, msg, hdrs, custom_url
         )

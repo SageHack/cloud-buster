@@ -13,7 +13,7 @@ logo = """
 
 def main(args):
     try:
-        print(logo)
+        print(logo, flush=True)
         if not args.target:
             parser.print_help()
         if os.path.isfile(args.target):
@@ -21,7 +21,7 @@ def main(args):
         else:
             scan(args)
     except KeyboardInterrupt:
-        print('>> INTERRUPTED BY USER <<')
+        print('>> INTERRUPTED BY USER <<', flush=True)
         sys.exit()
 
 
@@ -85,15 +85,13 @@ def sub_scan_subdomain(buster, args):
 
 def print_match(target_main, target_found, method):
     print(
-        '>> MATCH [%s;%s;%s;%s;%s;%s] <<' % (
+        '>> MATCH [%s;%s;%s;%s] <<' % (
             target_main.domain,
             method,
             target_found.domain
             if target_found.domain != target_found.ip
             else target_main.domain,
             target_found.ip,
-            target_found.status,
-            target_found.reason,
         ), flush=True
     )
 
