@@ -1,11 +1,10 @@
 from os import linesep
 from cloudflarenetwork import CloudFlareNetwork
 from descriptor.mxrecords import MxRecords
-from descriptor.pagetitle import PageTitle
 from options import Options
 from target import Target
 from DNSDumpsterAPI import DNSDumpsterAPI
-from ipv6support import IPv6Support
+from matchengine import MatchEngine
 import re
 
 
@@ -102,23 +101,15 @@ class CloudBuster:
     def is_interesting(self, target):
         return target.ip and not target.protected
 
-    def match(self, possible_target):
+    def match(self, possible_origin):
 
         if Options.SCAN_EVERYTHING:
             return False
 
-        main_target = self.target['main']
-
-        main_target.title = PageTitle(
-            'http://'+main_target.domain
-        ).__get__()
-
-        possible_target.title = PageTitle(
-            'http://'+IPv6Support.fix(possible_target.ip),
-            host=main_target.domain
-        ).__get__()
-
-        return main_target.title == possible_target.title
+        return MatchEngine.is_origin(
+            self.target['main'].domain,
+            possible_origin.ip
+        )
 
     def scan_summary(self):
         print('[SCAN SUMMARY]', flush=True)

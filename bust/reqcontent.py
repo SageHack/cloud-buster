@@ -1,14 +1,15 @@
 import urllib.request
 from urllib.error import HTTPError
 from ipurlredirecthandler import IpUrlRedirectHandler
+from tagparser import TagParser
 import re
 import ssl
 import random
 
 
-class PageTitle(object):
+class RequestContent(object):
 
-    titles = {}
+    content = {}
 
     def __init__(self, url, host=None):
         self.url = url
@@ -20,27 +21,14 @@ class PageTitle(object):
             self.id = self.url
 
     def __get__(self, obj=None, objtype=None):
-        if self.id in self.titles:
-            return self.titles[self.id]
+        id = self.id
 
-        urllib.request.install_opener(self.opener)
-        request = urllib.request.Request(url=self.url, headers=self.headers)
-        print('> reading: '+self.id)
+        if id in self.content:
+            return self.content[id]
 
-        try:
-            opened = urllib.request.urlopen(
-                request,
-                timeout=10
-            )
-            html = opened.read()
-            title = self.parse_title(html)
-        except (OSError, HTTPError):
-            opened = None
-            html = None
-            title = None
+        self.content[id] = self.get_content()
 
-        self.titles[self.id] = title
-        return title
+        return self.content[id]
 
     def __set__(self, obj=None, val=None):
         raise AttributeError
@@ -77,15 +65,35 @@ class PageTitle(object):
 
         return opener
 
-    def parse_title(self, html):
-        html = str(html)
-        get_title = re.compile(
-            '<title>(.*?)</title>',
-            re.IGNORECASE | re.DOTALL
-        )
-        search_result = get_title.search(html)
+    def get_content(self):
+        content = {
+            'status': None,
+            'title': None,
+            'html': None
+        }
 
-        if search_result:
-            return search_result.group(1)
-        else:
-            return None
+        urllib.request.install_opener(self.opener)
+        request = urllib.request.Request(url=self.url, headers=self.headers)
+        print('> reading: '+self.id)
+
+        try:
+            opened = urllib.request.urlopen(
+                request,
+                timeout=10
+            )
+            html = opened.read()
+        except (OSError, HTTPError):
+            return content
+
+        content['status'] = str(opened.status)+' '+opened.reason
+
+        if not html:
+            return content
+
+        content['html'] = str(html)
+
+        parser = TagParser(['title'])
+        parser.feed(content['html'])
+        content['title'] = parser.tag['title']
+
+        return content
