@@ -1,6 +1,9 @@
 #!/bin/sh
 #
-# Script used once to clean crimeflare/db
+# Turn out using this was a bit overkill as some origin did
+# not answer the CURL request in time but are still valid.
+#
+# I'm keeping this here but it's not really useful for now.
 #
 # Save dead origins from the Crimeflare DB.
 # Take about 3 hours to complete.
