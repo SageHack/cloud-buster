@@ -55,9 +55,17 @@ class CloudBuster:
         return self.scan(targets)
 
     def scan_crimeflare(self):
+        global cfdb
         targets = []
 
-        for line in open('crimeflare/db'):
+        """load cfdb in memory for __main__.scan_list()"""
+        if 'cfdb' not in globals():
+            cfdb = [
+                i for i
+                in open('crimeflare/db').readlines()
+            ]
+
+        for line in cfdb:
             if self.domain in line:
                 ip = line.partition(' ')[2].rstrip()
                 targets.append(Target(ip, 'crimeflare'))
