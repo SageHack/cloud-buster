@@ -12,17 +12,13 @@ logo = """
 
 
 def main(args):
-    try:
-        print(logo, flush=True)
-        if not args.target:
-            parser.print_help()
-        if os.path.isfile(args.target):
-            scan_list(args)
-        else:
-            scan(args)
-    except KeyboardInterrupt:
-        print('>> INTERRUPTED BY USER <<', flush=True)
-        sys.exit()
+    print(logo, flush=True)
+    if not args.target:
+        parser.print_help()
+    if os.path.isfile(args.target):
+        scan_list(args)
+    else:
+        scan(args)
 
 
 def scan_list(args):
@@ -106,4 +102,8 @@ def match_not_found(buster):
     )
 
 
-main(args)
+try:
+    main(args)
+except KeyboardInterrupt:
+    print('>> INTERRUPTED BY USER <<', flush=True)
+    sys.exit()
