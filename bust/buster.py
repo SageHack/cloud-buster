@@ -55,7 +55,7 @@ class CloudBuster:
         return self.scan(targets)
 
     def scan_crimeflare(self):
-        for line in open('lists/ipout'):
+        for line in open('crimeflare/db'):
             if self.domain in line:
                 crimeflare_ip = line.partition(' ')[2].rstrip()
                 return self.scan([Target(crimeflare_ip, 'crimeflare')])

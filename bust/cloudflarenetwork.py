@@ -6,13 +6,13 @@ class CloudFlareNetwork:
     IPV4_NETWORKS = [
         IPv4Network(network)
         for network
-        in open('lists/ips-v4').read().splitlines()
+        in open('lists/cloudflare_ipv4').read().splitlines()
     ]
 
     IPV6_NETWORKS = [
         IPv6Network(network)
         for network
-        in open('lists/ips-v6').read().splitlines()
+        in open('lists/cloudflare_ipv6').read().splitlines()
     ]
 
     def in_range(self, ip):
