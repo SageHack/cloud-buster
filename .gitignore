@@ -1,7 +1,6 @@
 lists/x*
 lists/ipout-hosts
 lists/ipout-protected
-crimeflare/
 tmp/
 
 *.pyc
