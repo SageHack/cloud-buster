@@ -55,10 +55,14 @@ class CloudBuster:
         return self.scan(targets)
 
     def scan_crimeflare(self):
+        targets = []
+
         for line in open('crimeflare/db'):
             if self.domain in line:
-                crimeflare_ip = line.partition(' ')[2].rstrip()
-                return self.scan([Target(crimeflare_ip, 'crimeflare')])
+                ip = line.partition(' ')[2].rstrip()
+                targets.append(Target(ip, 'crimeflare'))
+
+        return self.scan(targets)
 
     def scan_dnsdumpster(self):
         try:
