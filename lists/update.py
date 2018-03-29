@@ -27,8 +27,8 @@ def unzip(file):
 
 
 downloads = [
-    ['https://www.cloudflare.com/ips-v4', 'lists/ips-v4', None],
-    ['https://www.cloudflare.com/ips-v6', 'lists/ips-v6', None],
+    ['https://www.cloudflare.com/ips-v4', 'lists/cloudflare_ipv4', None],
+    ['https://www.cloudflare.com/ips-v6', 'lists/cloudflare_ipv6', None],
 ]
 
 for d in downloads:
