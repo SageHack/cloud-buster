@@ -1,3 +1,4 @@
+from updater import Updater
 from buster import CloudBuster
 from cli import args, parser
 from options import Options
@@ -5,16 +6,21 @@ import os.path
 import sys
 
 logo = """
-============ The =====,---/V\\
-==== CloudBUSTER ====~|__(o.o)
-=== by @SageHack =====UU  UU
+\033[31m============ The =====\033[35m,---\033[37m/V\\
+\033[32m==== CloudBUSTER ====\033[37m~\033[35m|  \033[37m(o.o)
+\033[34m=== by @SageHack =====\033[37muu\033[35m--\033[37muu\033[0m
 """
 
 
 def main(args):
+
     print(logo, flush=True)
+
     if not args.target:
         parser.print_help()
+        return
+
+    Updater.run()
     if os.path.isfile(args.target):
         scan_list(args)
     else:
@@ -34,11 +40,11 @@ def scan(args):
     buster.scan_main()
 
     if not buster.resolving():
-        print('>> CANT RESOLVE HOST <<', flush=True)
+        print('[error] cannot resolve host', flush=True)
         return
 
     if not buster.protected():
-        print('>> NOT BEHIND CLOUDFLARE <<', flush=True)
+        print('[error] not behind Cloudflare', flush=True)
         if not Options.SCAN_ANYWAY:
             return
 
@@ -81,7 +87,7 @@ def sub_scan_subdomain(buster, args):
 
 def print_match(target_main, target_found, method):
     print(
-        '>> MATCH [%s;%s;%s;%s] <<' % (
+        '[match] %s;%s;%s;%s' % (
             target_main.domain,
             method,
             target_found.domain
@@ -95,7 +101,7 @@ def print_match(target_main, target_found, method):
 def match_not_found(buster):
     buster.scan_summary()
     print(
-        '>> UNABLE TO CONFIRM [%s;interesting ips (%d)] <<' % (
+        '[fail] %s;interesting(%d)' % (
             buster.target['main'].domain,
             len(buster.list_interesting_hosts()),
         ), flush=True
@@ -105,5 +111,5 @@ def match_not_found(buster):
 try:
     main(args)
 except KeyboardInterrupt:
-    print('>> INTERRUPTED BY USER <<', flush=True)
+    print('[error] interrupted by user', flush=True)
     sys.exit()

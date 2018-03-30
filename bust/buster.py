@@ -128,20 +128,15 @@ class CloudBuster:
         )
 
     def scan_summary(self):
-        print('[SCAN SUMMARY]', flush=True)
+        interesting = self.list_interesting_hosts()
+        if not interesting:
+            return
 
-        if self.target['main']:
-            print(
-                'Target: '+self.target['main'].domain+linesep
-                + '> ip: '+str(self.target['main'].ip)+linesep
-                + '> protected: '+str(self.target['main'].protected),
-                flush=True
+        for host in interesting:
+            print('[interesting] %s;%s;%s' % (
+                host['type'], host['domain'], host['ip']
+                ), flush=True
             )
-
-        print('[interesting ips]', flush=True)
-
-        for host in self.list_interesting_hosts():
-            print(host['ip']+' > '+host['description'], flush=True)
 
     def list_interesting_hosts(self):
         hosts = []
@@ -152,7 +147,8 @@ class CloudBuster:
                     and target.status and target.status != 400:
                 hosts.append({
                     'ip': target.ip,
-                    'description': target.domain+' / '+target.name
+                    'domain': target.domain,
+                    'type': target.name,
                 })
 
         return hosts

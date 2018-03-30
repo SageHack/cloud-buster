@@ -75,7 +75,7 @@ class RequestContent(object):
 
         urllib.request.install_opener(self.opener)
         request = urllib.request.Request(url=self.url, headers=self.headers)
-        print('> reading: '+self.id, flush=True)
+        print('* reading: '+self.id, flush=True)
 
         try:
             opened = urllib.request.urlopen(

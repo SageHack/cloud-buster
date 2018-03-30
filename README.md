@@ -13,9 +13,6 @@ A security tool that aim at doing the following
  * openssl
 
 # Usage instructions
-* Install (see below) 
-* Download latest CloudFlare IPs and CrimeFlare DB
-* `python3 lists/update.py`
 * Run the fast/simple scan
 * `python3 bust mydomain.com`
 * Run the slow/comprehensive scan

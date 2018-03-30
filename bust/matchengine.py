@@ -39,13 +39,14 @@ class MatchEngine:
                 return False
 
         if strings[0] == strings[1]:
-            print('!! %s match' % (method), flush=True)
+            print('** match: %s' % (method), flush=True)
             return True
 
         if len(s) > 10:
             similarity = SequenceMatcher(None, s1, s2).ratio()
             if similarity > 0.9:
-                print('!! %s similar (%.2f)' % (method, similarity), flush=True)
+                percent = round(similarity * 100)
+                print('** similar: %s %d%%' % (method, percent), flush=True)
                 return True
 
         return False
