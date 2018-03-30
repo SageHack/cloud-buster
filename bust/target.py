@@ -73,7 +73,7 @@ class Target:
             return
 
         print(
-            '> ip: %s (CF %s%s)' % (
+            '* ip: %s (CF %s%s)' % (
                 self.ip,
                 'yes' if self.cloudflare_ip else 'no',
                 ' RAY-'+self.cloudflare_ray if self.cloudflare_ray else ''
@@ -82,7 +82,7 @@ class Target:
 
         if self.enabled:
             print(
-                '> http: %s %s %s' % (
+                '* http: %s %s %s' % (
                     self.enabled+' -' if self.enabled else '',
                     self.status,
                     self.reason if self.reason else ''
@@ -90,6 +90,6 @@ class Target:
             )
         else:
             print(
-                '> status: %s %s' % (self.status, self.reason),
+                '* status: %s %s' % (self.status, self.reason),
                 flush=True
             )

@@ -34,11 +34,11 @@ def scan(args):
     buster.scan_main()
 
     if not buster.resolving():
-        print('>> CANT RESOLVE HOST <<', flush=True)
+        print('[error] cannot resolve host', flush=True)
         return
 
     if not buster.protected():
-        print('>> NOT BEHIND CLOUDFLARE <<', flush=True)
+        print('[error] not behind Cloudflare', flush=True)
         if not Options.SCAN_ANYWAY:
             return
 
@@ -81,7 +81,7 @@ def sub_scan_subdomain(buster, args):
 
 def print_match(target_main, target_found, method):
     print(
-        '>> MATCH [%s;%s;%s;%s] <<' % (
+        '[match] %s;%s;%s;%s' % (
             target_main.domain,
             method,
             target_found.domain
@@ -95,7 +95,7 @@ def print_match(target_main, target_found, method):
 def match_not_found(buster):
     buster.scan_summary()
     print(
-        '>> UNABLE TO CONFIRM [%s;interesting ips (%d)] <<' % (
+        '[fail] %s;interesting(%d)' % (
             buster.target['main'].domain,
             len(buster.list_interesting_hosts()),
         ), flush=True
@@ -105,5 +105,5 @@ def match_not_found(buster):
 try:
     main(args)
 except KeyboardInterrupt:
-    print('>> INTERRUPTED BY USER <<', flush=True)
+    print('[error] interrupted by user', flush=True)
     sys.exit()
