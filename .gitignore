@@ -1,8 +1,4 @@
-lists/x*
-lists/ipout-hosts
-lists/ipout-protected
 tmp/
-
 *.pyc
 *.txt
 *.log

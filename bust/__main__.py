@@ -1,3 +1,4 @@
+from updater import Updater
 from buster import CloudBuster
 from cli import args, parser
 from options import Options
@@ -12,9 +13,14 @@ logo = """
 
 
 def main(args):
+
     print(logo, flush=True)
+
     if not args.target:
         parser.print_help()
+        return
+
+    Updater.run()
     if os.path.isfile(args.target):
         scan_list(args)
     else:
