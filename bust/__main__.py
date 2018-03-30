@@ -5,9 +5,9 @@ import os.path
 import sys
 
 logo = """
-============ The =====,---/V\\
-==== CloudBUSTER ====~|__(o.o)
-=== by @SageHack =====UU  UU
+\033[31m============ The =====\033[35m,---\033[37m/V\\
+\033[32m==== CloudBUSTER ====\033[37m~\033[35m|  \033[37m(o.o)
+\033[34m=== by @SageHack =====\033[37muu\033[35m--\033[37muu\033[0m
 """
 
 
