@@ -47,7 +47,7 @@ CrimeFlare DB is updated every two weeks, the GitHub repo might not be up to dat
 ```
 sudo apt-get install python3 python3-pip
 pip3 install dnspython3
-git clone https://github.com/SageHack/cloudflare-resolver.git
+git clone https://github.com/SageHack/cloud-buster.git
 cd cloud-buster
 python3 bust -h
 ```
@@ -57,7 +57,7 @@ python3 bust -h
 su
 apt install python3-pip
 pip3 install dnspython3
-git clone https://github.com/SageHack/cloudflare-resolver.git
+git clone https://github.com/SageHack/cloud-buster.git
 cd cloud-buster
 python3 bust -h
 ```
@@ -81,7 +81,7 @@ rm -fr Python-3.4.3/
 ln -s /usr/local/bin/python3 /usr/bin/python3
 pip3 install dnspython3
 # Open new terminal window
-git clone https://github.com/SageHack/cloudflare-resolver.git
+git clone https://github.com/SageHack/cloud-buster.git
 cd cloud-buster
 python3 bust -h
 ```
@@ -90,7 +90,7 @@ python3 bust -h
 ```
 xbps-install python3 python-pip
 pip install dnspython3
-git clone https://github.com/SageHack/cloudflare-resolver.git
+git clone https://github.com/SageHack/cloud-buster.git
 cd cloud-buster
 python3 bust -h
 ```
@@ -99,7 +99,7 @@ python3 bust -h
 ```
 pacman -Sy python python-pip
 pip install dnspython3
-git clone https://github.com/SageHack/cloudflare-resolver.git
+git clone https://github.com/SageHack/cloud-buster.git
 cd cloud-buster
 python3 bust -h
 ```
