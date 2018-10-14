@@ -30,7 +30,7 @@ class Updater:
     def last_updated(date):
         file = open('lists/last_updated', 'w')
         file.write(date)
-        file.close
+        file.close()
 
     def today():
         return time.strftime("%Y-%m-%d")
