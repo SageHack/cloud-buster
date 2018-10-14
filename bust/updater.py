@@ -1,8 +1,11 @@
 import urllib.request
+import http.client
+from urllib.error import HTTPError
 import zipfile
 import os
 import sys
 import time
+
 
 class Updater:
     def run():
@@ -19,7 +22,6 @@ class Updater:
 
         Updater.last_updated(Updater.today())
         print('')
-
 
     def uptodate():
         last_updated = open('lists/last_updated', 'r').read()
