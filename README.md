@@ -6,13 +6,15 @@ A security tool that aim at doing the following
 
 ![Screenshot](/screenshot.png?raw=true "Usage example")
 
-# Requirements
+## Requirements
  * [Python 3.5](https://www.python.org/downloads/release/python-350/)
  * [dnspython3 1.14.0](http://www.dnspython.org/kits3/1.14.0/)
  * libssl
  * openssl
 
-# Usage instructions
+## Usage
+
+### Basic use cases
 * Run the fast/simple scan
 * `python3 bust mydomain.com`
 * Run the slow/comprehensive scan
@@ -20,7 +22,7 @@ A security tool that aim at doing the following
 * Scan multiple domains
 * `python3 bust domainlist.txt` (with any options)
 
-# Other examples
+### Complex use cases
 * Use a single scan technique
 * `python3 bust mydomain.com --scan crimeflare`
 * Chose your own mix of scan techniques
@@ -30,20 +32,15 @@ A security tool that aim at doing the following
 * Scan the 20,000 most popular subdomains on the net
 * `python3 bust mydomain.com --dept full`
 
-# Using domain lists
+### Using domain lists
 Use a text file with one domain per line, nothing else
 
-# Updating lists
+### Updating lists
 CrimeFlare DB is updated every two weeks, the GitHub repo might not be up to date with the latest list. You should use the update tool to get the latests lists.
 
-# Tested OSes
-* Debian
-* Ubuntu
-* Arch
-* Void
-* Parabola
+## Installation
 
-# How to use (Ubuntu)
+### Ubuntu
 ```
 sudo apt-get install python3 python3-pip
 pip3 install dnspython3
@@ -52,7 +49,7 @@ cd cloud-buster
 python3 bust -h
 ```
 
-# How to use (Debian 9)
+### Debian 9
 ```
 su
 apt install python3-pip
@@ -62,7 +59,7 @@ cd cloud-buster
 python3 bust -h
 ```
 
-# How to use (Debian 8)
+### Debian 8
 ```
 su root
 apt-get remove python3
@@ -86,7 +83,7 @@ cd cloud-buster
 python3 bust -h
 ```
 
-# How to use (Void)
+### Void
 ```
 xbps-install python3 python-pip
 pip install dnspython3
@@ -95,7 +92,7 @@ cd cloud-buster
 python3 bust -h
 ```
 
-# How to use (Arch and Parabola)
+### Arch and Parabola
 ```
 pacman -Sy python python-pip
 pip install dnspython3
