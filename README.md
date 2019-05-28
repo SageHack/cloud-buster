@@ -100,3 +100,10 @@ git clone https://github.com/SageHack/cloud-buster.git
 cd cloud-buster
 python3 bust -h
 ```
+
+## Contributing
+
+The current tested version is Python 3.5.3.
+Please use this version to submit pull requests.
+
+Otherwise, all other requirements are listed above.
