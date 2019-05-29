@@ -42,13 +42,6 @@ It's filled with awesome features!
 ### Using domain lists
 Use a text file with one domain per line, nothing else
 
-### Updating lists
-CrimeFlare DB is updated every two weeks, the GitHub repo might not be up to date with the latest list. You should use the update tool to get the latest lists.
-
-### Tor
-
-Since Cloudflare is very good at blocking Tor with CAPTCHAs, using this tool over Tor is pretty much useless.
-
 ## Installation
 
 ### Ubuntu
