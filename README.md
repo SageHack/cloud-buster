@@ -5,10 +5,11 @@ A comprehensive pentest tool that checks Cloudflare enabled sites for origin IP 
 It's filled with awesome features!
 
 * scan a wide array of miss-configuration and vulnerabilities
-* detail origin IP and related services IPs
-* smart(ish) engine that can certify matches
+* search other IP resolution service databases
+* detail origin and related services IPs
+* smart engine that certify matches
 * multiple command line arguments to customize and fine tune
-* scan any number of targets
+* support target list for automated scans
 * still maintained and improved
 
 ![Screenshot](/screenshot.png?raw=true "Usage example")
