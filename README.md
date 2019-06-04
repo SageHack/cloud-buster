@@ -1,11 +1,18 @@
-# cloudflare-resolver
+﻿# Cloudflare Resolver
 
 [![Build Status](https://travis-ci.com/SageHack/cloud-buster.svg?branch=master)](https://travis-ci.com/SageHack/cloud-buster)
 
-A security tool that aim at doing the following
-* Check if domains or ips are part of the CloudFlare network
-* Scan domains for know vulnerabilities that allow to find ip
-* Dictionary scan subdomains to find ips outside of CF network
+A comprehensive pentest tool that checks Cloudflare enabled sites for origin IP leaks.
+
+It's filled with awesome features!
+
+* scan a wide array of miss-configuration and vulnerabilities
+* search other IP resolution service databases
+* detail origin and related services IPs
+* smart engine that certify matches
+* multiple command line arguments to customize and fine tune
+* support target list for automated scans
+* still maintained and improved
 
 ![Screenshot](/screenshot.png?raw=true "Usage example")
 
@@ -37,9 +44,6 @@ A security tool that aim at doing the following
 
 ### Using domain lists
 Use a text file with one domain per line, nothing else
-
-### Updating lists
-CrimeFlare DB is updated every two weeks, the GitHub repo might not be up to date with the latest list. You should use the update tool to get the latests lists.
 
 ## Installation
 
