@@ -1,9 +1,13 @@
+# build config
+dist: xenial
+git:
+  submodules: false
+
+# app related setings
 language: python
 python:
   - "3.5"
-# command to install dependencies
 install:
-  - pip install dns3python bs4
-# command to run tests
+  - pip install dnspython3 bs4 requests
 script:
   - pytest
