@@ -1,5 +1,7 @@
 ﻿# Cloudflare Resolver
 
+[![Build Status](https://travis-ci.com/SageHack/cloud-buster.svg?branch=master)](https://travis-ci.com/SageHack/cloud-buster)
+
 A comprehensive pentest tool that checks Cloudflare enabled sites for origin IP leaks.
 
 It's filled with awesome features!
