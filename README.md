@@ -1,4 +1,7 @@
 # cloudflare-resolver
+
+[![Build Status](https://travis-ci.com/SageHack/cloud-buster.svg?branch=master)](https://travis-ci.com/SageHack/cloud-buster)
+
 A security tool that aim at doing the following
 * Check if domains or ips are part of the CloudFlare network
 * Scan domains for know vulnerabilities that allow to find ip
