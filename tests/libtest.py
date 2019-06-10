@@ -41,34 +41,3 @@ def bust(
             return False
 
     return True
-
-
-def test_fail_without_args():
-    assert bust(
-        [], 2, None, 'required: DOMAIN'
-    ) is True
-
-
-def test_exec_succeed_showing_help():
-    assert bust(
-        ['-h'], 0, 'usage:', None
-    ) is True
-
-
-def test_error_on_target_not_behind_cloudflares():
-    assert bust(
-        ['hacklair.cyberguerrilla.org'], 0, 'not behind Cloudflare', None
-    ) is True
-
-
-def test_unresolvable_domain():
-    assert bust(
-        ['buster-test-9000.tk'], 0, 'cannot resolve host', None
-    ) is True
-
-
-def test_match_crimeflare():
-    assert bust(
-        ['thecatholicdirectory.com', '--scan', 'crimeflare'],
-        0, '[match] thecatholicdirectory.com', None
-    ) is True
