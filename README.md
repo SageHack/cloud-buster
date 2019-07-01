@@ -10,9 +10,10 @@ It's filled with awesome features!
 * smart engine that certify matches
 * multiple command line arguments to customize and fine tune
 * support target list for automated scans
-* still maintained and improved
 
 ![Screenshot](/screenshot.png?raw=true "Usage example")
+
+**Warning**: This project is not maintained. [I have left the hacking scene](https://hacklair.cyberguerrilla.org/thanks-for-all-the-fish/).
 
 ## Requirements
  * [Python 3.5](https://www.python.org/downloads/release/python-350/)
