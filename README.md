@@ -15,7 +15,9 @@ It's filled with awesome features!
 
 ![Screenshot](/screenshot.png?raw=true "Usage example")
 
-**Warning**: This project is not maintained. [I have left the hacking scene](https://hacklair.cyberguerrilla.org/thanks-for-all-the-fish/).
+## Warning
+
+[I have left the hacking scene](https://hacklair.cyberguerrilla.org/thanks-for-all-the-fish/) and thus, archived this project. It's still awesome and you can still use it and fork it.
 
 ## Requirements
  * [Python 3.5](https://www.python.org/downloads/release/python-350/)
